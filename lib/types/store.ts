@@ -120,4 +120,4 @@ export interface MarketplaceBootstrap {
   products: ProductSummary[];
   categories: Category[];
   hasBackendError: boolean;
-}
+} 
