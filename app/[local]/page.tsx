@@ -1,13 +1,8 @@
-import { HomePage } from "@/components/marketplace/home-page";
-import { getMarketplaceBootstrap } from "@/lib/api/store";
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ local: string }>;
-}) {
-  const { local } = await params;
-  const bootstrap = await getMarketplaceBootstrap();
+export default function Home() {
+  return (
+    <div>
 
-  return <HomePage {...bootstrap} locale={local} />;
+    </div>
+  );
 }

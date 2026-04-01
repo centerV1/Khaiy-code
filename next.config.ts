@@ -3,14 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "khai-code.s3.amazonaws.com",
-      },
-    ],
-  },
+  /* config options here */
 };
 
 export default withNextIntl(nextConfig);
