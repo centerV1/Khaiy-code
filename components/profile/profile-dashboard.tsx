@@ -1,0 +1,216 @@
+"use client";
+
+import Link from "next/link";
+import { Download, Library, ShieldCheck } from "lucide-react";
+import { useEffect, useState, useTransition } from "react";
+
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  getMyPurchases,
+  getPurchasedProductDownload,
+} from "@/lib/api/store";
+import { getErrorMessage } from "@/lib/api/fetcher";
+import {
+  formatDate,
+  formatPrice,
+  getPrimaryImage,
+  getProductName,
+  getSiteCopy,
+  withLocale,
+} from "@/lib/site";
+import type { PurchaseItem } from "@/lib/types/store";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/providers/auth-provider";
+
+export function ProfileDashboard({ locale }: { locale: string }) {
+  const copy = getSiteCopy(locale);
+  const { user, status, isAuthenticated } = useAuth();
+  const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [downloadingId, setDownloadingId] = useState<number | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    void (async () => {
+      try {
+        const response = await getMyPurchases();
+        setPurchases(response.products);
+      } catch (loadError) {
+        setError(getErrorMessage(loadError));
+      }
+    })();
+  }, [isAuthenticated]);
+
+  function handleDownload(productId: number) {
+    setError(null);
+    setDownloadingId(productId);
+
+    startTransition(async () => {
+      try {
+        const download = await getPurchasedProductDownload(productId);
+        window.open(download.url, "_blank", "noopener,noreferrer");
+      } catch (downloadError) {
+        setError(getErrorMessage(downloadError));
+      } finally {
+        setDownloadingId(null);
+      }
+    });
+  }
+
+  if (status === "loading") {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="rounded-[2rem] border border-white/60 bg-white/80 p-8 text-sm text-slate-500 shadow-xl shadow-sky-100/70">
+          Loading profile...
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+        <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-10 shadow-xl shadow-sky-100/70">
+          <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
+            {copy.nav.profile}
+          </p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+            {copy.profile.guestTitle}
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+            {copy.profile.guestDescription}
+          </p>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "mt-8 h-12 rounded-full px-6",
+            )}
+            href={withLocale(locale, "/login")}
+          >
+            {copy.profile.guestCta}
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 pb-20 pt-12 sm:px-6 lg:px-8">
+      <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
+        <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
+          {copy.nav.profile}
+        </p>
+        <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <h1 className="text-4xl font-semibold tracking-tight text-slate-950">
+              {copy.profile.title}
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+              {copy.profile.description}
+            </p>
+          </div>
+          <div className="rounded-[2rem] border border-sky-100 bg-sky-50/80 px-5 py-4 text-sm text-slate-700">
+            Signed in as <span className="font-semibold">{user.email}</span>
+          </div>
+        </div>
+      </section>
+
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <MetricCard label="Purchases" value={String(user.purchaseCount)} />
+        <MetricCard label="Listings" value={String(user.productCount)} />
+        <MetricCard label="Provider" value={user.provider} />
+      </div>
+
+      <section className="mt-8 rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-slate-900 text-white">
+            <Library className="size-5" />
+          </span>
+          <div>
+            <h2 className="text-2xl font-semibold text-slate-950">
+              {copy.profile.purchasesTitle}
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-slate-600">
+              {copy.profile.purchasesDescription}
+            </p>
+          </div>
+        </div>
+
+        {error ? <p className="mt-5 text-sm text-red-500">{error}</p> : null}
+
+        <div className="mt-6 space-y-4">
+          {purchases.length > 0 ? (
+            purchases.map((purchase) => (
+              <article
+                className="grid gap-5 rounded-[2rem] border border-sky-100 bg-white p-5 shadow-sm shadow-sky-100/50 md:grid-cols-[110px_1fr_auto]"
+                key={`${purchase.orderId}-${purchase.product.id}`}
+              >
+                <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.25),_rgba(255,255,255,0.92)_60%)]">
+                  {getPrimaryImage(purchase.product) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      alt={getProductName(purchase.product, locale)}
+                      className="h-full w-full object-cover"
+                      src={getPrimaryImage(purchase.product) ?? ""}
+                    />
+                  ) : null}
+                </div>
+
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-xl font-semibold text-slate-950">
+                      {getProductName(purchase.product, locale)}
+                    </p>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                      <ShieldCheck className="size-3.5" />
+                      {copy.profile.ownedLabel}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-500">
+                    {copy.profile.purchasedOn}{" "}
+                    {formatDate(purchase.purchasedAt, locale)}
+                  </p>
+                  <p className="mt-3 text-sm font-medium text-slate-700">
+                    {formatPrice(purchase.unitPrice / 100, locale)}
+                  </p>
+                </div>
+
+                <div className="flex items-center">
+                  <Button
+                    className="h-11 rounded-full px-5"
+                    disabled={isPending && downloadingId === purchase.product.id}
+                    onClick={() => handleDownload(purchase.product.id)}
+                  >
+                    <Download className="size-4" />
+                    {downloadingId === purchase.product.id
+                      ? copy.auth.pending
+                      : copy.profile.download}
+                  </Button>
+                </div>
+              </article>
+            ))
+          ) : (
+            <div className="rounded-[2rem] border border-dashed border-sky-200 bg-sky-50/60 px-5 py-10 text-center text-sm leading-6 text-slate-500">
+              {copy.common.emptyState}
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function MetricCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[2rem] border border-white/60 bg-white/88 p-6 shadow-lg shadow-sky-100/60">
+      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{label}</p>
+      <p className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+        {value}
+      </p>
+    </div>
+  );
+}
