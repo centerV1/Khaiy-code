@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Download, Library, ShieldCheck } from "lucide-react";
+import { Download, Library, LogOut, ShieldCheck } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -24,7 +24,7 @@ import { useAuth } from "@/providers/auth-provider";
 
 export function ProfileDashboard({ locale }: { locale: string }) {
   const copy = getSiteCopy(locale);
-  const { user, status, isAuthenticated } = useAuth();
+  const { user, status, isAuthenticated, logout } = useAuth();
   const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
@@ -113,8 +113,31 @@ export function ProfileDashboard({ locale }: { locale: string }) {
               {copy.profile.description}
             </p>
           </div>
-          <div className="rounded-[2rem] border border-sky-100 bg-sky-50/80 px-5 py-4 text-sm text-slate-700">
-            Signed in as <span className="font-semibold">{user.email}</span>
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-3 rounded-[2rem] border border-sky-100 bg-sky-50/80 px-5 py-4 text-sm text-slate-700">
+              <span className="inline-flex size-11 items-center justify-center overflow-hidden rounded-full border border-white/80 bg-white text-sm font-semibold text-slate-800 shadow-sm shadow-sky-100/70">
+                {user.avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={user.email}
+                    className="size-full object-cover"
+                    src={user.avatarUrl}
+                  />
+                ) : (
+                  user.email.slice(0, 2).toUpperCase()
+                )}
+              </span>
+              <span>
+                Signed in as <span className="font-semibold">{user.email}</span>
+              </span>
+            </div>
+            <Button
+              className="h-12 rounded-full bg-slate-900 px-5 text-white hover:bg-slate-800"
+              onClick={() => void logout()}
+            >
+              <LogOut className="size-4" />
+              {copy.nav.logout}
+            </Button>
           </div>
         </div>
       </section>

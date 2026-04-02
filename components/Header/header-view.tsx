@@ -6,7 +6,8 @@ import { Menu, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 
 import { CartDrawer } from "@/components/cart/cart-drawer";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/Header/language-switcher";
+import { buttonVariants } from "@/components/ui/button";
 import { getInitials, getSiteCopy, withLocale } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
@@ -19,7 +20,7 @@ type HeaderProps = {
 export function Header({ locale }: HeaderProps) {
   const pathname = usePathname();
   const copy = getSiteCopy(locale);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { count } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,10 +46,8 @@ export function Header({ locale }: HeaderProps) {
               className="inline-flex items-center gap-3"
               href={withLocale(locale, "/")}
             >
-              <span className="inline-flex size-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,_#0f6cfd,_#63b3ff)] text-sm font-bold tracking-[0.3em] text-white shadow-lg shadow-sky-300/50">
-                KC
-              </span>
-              <span className="hidden text-sm font-semibold tracking-[0.25em] text-slate-900 uppercase sm:block">
+
+              <span className=" text-sm font-semibold tracking-[0.25em] text-slate-900 uppercase sm:block">
                 {copy.brand}
               </span>
             </Link>
@@ -71,6 +70,7 @@ export function Header({ locale }: HeaderProps) {
           </div>
 
           <div className="hidden items-center gap-2 md:flex">
+            <LanguageSwitcher locale={locale} />
             <button
               className="relative inline-flex h-11 items-center gap-2 rounded-full border border-sky-100 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-sky-200 hover:text-slate-950"
               onClick={() => setCartOpen(true)}
@@ -91,14 +91,17 @@ export function Header({ locale }: HeaderProps) {
                   className="inline-flex size-11 items-center justify-center rounded-full border border-sky-100 bg-white text-sm font-semibold text-slate-800 transition hover:border-sky-200"
                   href={withLocale(locale, "/profile")}
                 >
-                  {getInitials(user.email)}
+                  {user.avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      alt={user.email}
+                      className="size-full rounded-full object-cover"
+                      src={user.avatarUrl}
+                    />
+                  ) : (
+                    getInitials(user.email)
+                  )}
                 </Link>
-                <Button
-                  className="rounded-full bg-slate-900 px-5 text-white hover:bg-slate-800"
-                  onClick={() => void logout()}
-                >
-                  {copy.nav.logout}
-                </Button>
               </>
             ) : (
               <>
@@ -149,6 +152,8 @@ export function Header({ locale }: HeaderProps) {
 
         {mobileMenuOpen ? (
           <div className="border-t border-sky-100 px-4 py-4 md:hidden">
+            <LanguageSwitcher locale={locale} mobile />
+
             <nav className="space-y-2">
               {navigation.map((item) => (
                 <Link
@@ -175,12 +180,6 @@ export function Header({ locale }: HeaderProps) {
                   >
                     {copy.nav.profile}
                   </Link>
-                  <Button
-                    className="rounded-full"
-                    onClick={() => void logout()}
-                  >
-                    {copy.nav.logout}
-                  </Button>
                 </>
               ) : (
                 <>

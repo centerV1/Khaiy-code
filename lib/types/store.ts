@@ -43,6 +43,7 @@ export interface ProductSummary {
 export interface SessionUser {
   id: number;
   email: string;
+  avatarUrl?: string | null;
   role: UserRole;
   provider: AuthProviderName;
   createdAt: string;
