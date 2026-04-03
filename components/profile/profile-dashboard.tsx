@@ -27,7 +27,7 @@ export function ProfileDashboard({ locale }: { locale: string }) {
   const t = useTranslations();
   const translate = useTranslate();
   const { user, status, isAuthenticated, logout } = useAuth();
-  const canViewListings = hasRole(user, "ADMIN");
+  const canViewListings = hasRole(user, "ADMIN", "SELLER");
   const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);

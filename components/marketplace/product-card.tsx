@@ -47,6 +47,7 @@ export function ProductCard({ locale, product }: ProductCardProps) {
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
               src={primaryImage}
+              loading="lazy"
             />
           ) : (
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.25),transparent_30%),linear-gradient(135deg,rgba(15,23,42,0.06),rgba(14,165,233,0.18))]" />

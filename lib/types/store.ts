@@ -2,7 +2,7 @@ export type AppLocale = "en" | "th";
 
 export type AuthStatus = "loading" | "authenticated" | "guest";
 
-export type UserRole = "USER" | "ADMIN";
+export type UserRole = "USER" | "ADMIN" | "SELLER";
 export type AuthProviderName = "LOCAL" | "GOOGLE" | "FACEBOOK";
 
 export interface Category {

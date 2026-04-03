@@ -107,6 +107,21 @@
     "subtotal": "Subtotal",
     "remove": "Remove"
   },
+  "footer": {
+    "emailPrimary": "Email Khaiy Code",
+    "copyright": "© 2026 Khaiy Code",
+    "links": {
+      "products": "Products",
+      "sellers": "Sellers",
+      "partnerships": "Partnerships",
+      "profile": "Profile",
+      "library": "Library",
+      "blog": "Blog",
+      "about": "About Khaiy Code",
+      "license": "Licence",
+      "privacy": "Privacy"
+    }
+  },
   "labels": {
     "seller": "Seller",
     "price": "Price",

@@ -107,6 +107,21 @@
     "subtotal": "ยอดรวม",
     "remove": "ลบออก"
   },
+  "footer": {
+    "emailPrimary": "อีเมล Khaiy Code",
+    "copyright": "© 2026 Khaiy Code",
+    "links": {
+      "products": "สินค้า",
+      "sellers": "ผู้ขาย",
+      "partnerships": "พาร์ตเนอร์",
+      "profile": "โปรไฟล์",
+      "library": "คลังสินค้า",
+      "blog": "บล็อก",
+      "about": "เกี่ยวกับ Khaiy Code",
+      "license": "ลิขสิทธิ์",
+      "privacy": "ความเป็นส่วนตัว"
+    }
+  },
   "labels": {
     "seller": "ผู้ขาย",
     "price": "ราคา",
