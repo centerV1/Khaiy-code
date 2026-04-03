@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { ArrowRight, ShoppingBag, Trash2, X } from "lucide-react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getErrorMessage } from "@/lib/api/fetcher";
-import { createCheckoutSession } from "@/lib/api/store";
-import { formatPrice, getSiteCopy, withLocale } from "@/lib/site";
+import { createCheckoutSession } from "@/lib/api/payment";
+import { formatPrice, withLocale } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 import { useCart } from "@/providers/cart-provider";
@@ -20,7 +21,7 @@ type CartDrawerProps = {
 };
 
 export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
-  const copy = getSiteCopy(locale);
+  const t = useTranslations();
   const pathname = usePathname();
   const { items, subtotal, removeItem } = useCart();
   const { isAuthenticated } = useAuth();
@@ -51,7 +52,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
       }`}
     >
       <button
-        aria-label="Close cart"
+        aria-label={t("cart.close")}
         className={`absolute inset-0 bg-slate-950/35 backdrop-blur-sm transition-opacity ${
           open ? "opacity-100" : "opacity-0"
         }`}
@@ -66,9 +67,9 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
       >
         <div className="flex items-center justify-between border-b border-sky-100 px-5 py-4">
           <div>
-            <p className="text-sm font-medium text-sky-600">{copy.nav.cart}</p>
+            <p className="text-sm font-medium text-sky-600">{t("nav.cart")}</p>
             <h2 className="text-xl font-semibold text-slate-950">
-              {copy.cart.title}
+              {t("cart.title")}
             </h2>
           </div>
 
@@ -82,7 +83,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
         </div>
 
         <div className="border-b border-sky-100 px-5 py-4 text-sm text-slate-600">
-          {copy.cart.description}
+          {t("cart.description")}
         </div>
 
         {items.length === 0 ? (
@@ -92,10 +93,10 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-slate-950">
-                {copy.cart.emptyTitle}
+                {t("cart.emptyTitle")}
               </h3>
               <p className="text-sm leading-6 text-slate-600">
-                {copy.cart.emptyDescription}
+                {t("cart.emptyDescription")}
               </p>
             </div>
           </div>
@@ -109,7 +110,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.2),_rgba(255,255,255,0.9)_60%)] text-[10px] font-semibold uppercase tracking-[0.3em] text-sky-700">
-                      Code
+                      {t("labels.code")}
                     </div>
 
                     <div className="min-w-0 flex-1">
@@ -129,7 +130,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                           type="button"
                         >
                           <Trash2 className="size-3.5" />
-                          {copy.cart.remove}
+                          {t("cart.remove")}
                         </button>
                       </div>
                     </div>
@@ -140,7 +141,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
 
             <div className="border-t border-sky-100 px-5 py-5">
               <div className="flex items-center justify-between text-sm text-slate-500">
-                <span>{copy.cart.subtotal}</span>
+                <span>{t("cart.subtotal")}</span>
                 <span className="text-lg font-semibold text-slate-950">
                   {formatPrice(subtotal, locale)}
                 </span>
@@ -149,7 +150,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
               {!isAuthenticated ? (
                 <>
                   <p className="mt-4 text-sm leading-6 text-slate-500">
-                    {copy.cart.authNotice}
+                    {t("cart.authNotice")}
                   </p>
                   <Link
                     className={cn(
@@ -161,7 +162,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                     )}`}
                     onClick={onClose}
                   >
-                    {copy.cart.loginToCheckout}
+                    {t("cart.loginToCheckout")}
                     <ArrowRight className="size-4" />
                   </Link>
                 </>
@@ -171,7 +172,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                   disabled={isPending}
                   onClick={handleCheckout}
                 >
-                  {isPending ? copy.auth.pending : copy.common.checkout}
+                  {isPending ? t("auth.pending") : t("common.checkout")}
                   <ArrowRight className="size-4" />
                 </Button>
               )}

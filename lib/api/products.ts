@@ -1,12 +1,8 @@
 import { apiFetch } from "@/lib/api/fetcher";
 import type {
-  Category,
-  CreateCheckoutSessionResponse,
   CreateProductPayload,
   DownloadProductResponse,
-  MarketplaceBootstrap,
   ProductSummary,
-  PurchaseLibraryResponse,
   SellerProduct,
 } from "@/lib/types/store";
 
@@ -28,38 +24,8 @@ export async function getProduct(productId: number) {
   });
 }
 
-export async function getCategories() {
-  return apiFetch<Category[]>("/category", {
-    next: {
-      revalidate: 300,
-      tags: ["categories"],
-    },
-  });
-}
-
-export async function getMarketplaceBootstrap(): Promise<MarketplaceBootstrap> {
-  const [productsResult, categoriesResult] = await Promise.allSettled([
-    getProducts(),
-    getCategories(),
-  ]);
-
-  return {
-    products:
-      productsResult.status === "fulfilled" ? productsResult.value : [],
-    categories:
-      categoriesResult.status === "fulfilled" ? categoriesResult.value : [],
-    hasBackendError:
-      productsResult.status === "rejected" ||
-      categoriesResult.status === "rejected",
-  };
-}
-
 export async function getMyProducts() {
   return apiFetch<SellerProduct[]>("/products/mine");
-}
-
-export async function getMyPurchases() {
-  return apiFetch<PurchaseLibraryResponse>("/users/purchases");
 }
 
 export async function createProduct(payload: CreateProductPayload) {
@@ -91,20 +57,16 @@ export async function createProduct(payload: CreateProductPayload) {
 }
 
 export async function deleteProduct(productId: number) {
-  return apiFetch<{ success: boolean; message: string }>(`/products/${productId}`, {
-    method: "DELETE",
-  });
-}
-
-export async function createCheckoutSession(productIds: number[]) {
-  return apiFetch<CreateCheckoutSessionResponse>("/payment/payment-session", {
-    method: "POST",
-    body: {
-      items: productIds.map((productId) => ({ productId })),
+  return apiFetch<{ success: boolean; message: string }>(
+    `/products/${productId}`,
+    {
+      method: "DELETE",
     },
-  });
+  );
 }
 
 export async function getPurchasedProductDownload(productId: number) {
-  return apiFetch<DownloadProductResponse>(`/products/purchases/file/${productId}`);
+  return apiFetch<DownloadProductResponse>(
+    `/products/purchases/file/${productId}`,
+  );
 }

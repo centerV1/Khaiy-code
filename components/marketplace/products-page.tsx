@@ -1,9 +1,10 @@
 "use client";
 
 import { useDeferredValue, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { ProductCard } from "@/components/marketplace/product-card";
-import { getCategoryName, getProductDescription, getProductName, getSiteCopy } from "@/lib/site";
+import { useTranslate } from "@/utils/useTranslate";
 import type { Category, ProductSummary } from "@/lib/types/store";
 
 type ProductsPageProps = {
@@ -19,7 +20,8 @@ export function ProductsPage({
   categories,
   hasBackendError,
 }: ProductsPageProps) {
-  const copy = getSiteCopy(locale);
+  const t = useTranslations();
+  const translate = useTranslate();
   const [query, setQuery] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const deferredQuery = useDeferredValue(query);
@@ -28,8 +30,8 @@ export function ProductsPage({
     const normalizedQuery = deferredQuery.trim().toLowerCase();
     const matchesQuery =
       normalizedQuery.length === 0 ||
-      getProductName(product, locale).toLowerCase().includes(normalizedQuery) ||
-      getProductDescription(product, locale)
+      translate(product, "name").toLowerCase().includes(normalizedQuery) ||
+      translate(product, "description")
         .toLowerCase()
         .includes(normalizedQuery) ||
       product.user.email.toLowerCase().includes(normalizedQuery);
@@ -47,13 +49,13 @@ export function ProductsPage({
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-              {copy.nav.products}
+              {t("nav.products")}
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
-              {copy.products.title}
+              {t("products.title")}
             </h1>
             <p className="mt-4 text-base leading-7 text-slate-600">
-              {copy.products.description}
+              {t("products.description")}
             </p>
           </div>
 
@@ -61,7 +63,7 @@ export function ProductsPage({
             <input
               className="h-12 w-full rounded-full border border-sky-100 bg-sky-50/70 px-5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:bg-white"
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={copy.products.searchPlaceholder}
+              placeholder={t("products.searchPlaceholder")}
               value={query}
             />
             <div className="flex flex-wrap gap-2">
@@ -74,7 +76,7 @@ export function ProductsPage({
                 onClick={() => setActiveCategoryId(null)}
                 type="button"
               >
-                {copy.products.filterAll}
+                {t("products.filterAll")}
               </button>
               {categories.map((category) => (
                 <button
@@ -87,7 +89,7 @@ export function ProductsPage({
                   onClick={() => setActiveCategoryId(category.id)}
                   type="button"
                 >
-                  {getCategoryName(category, locale)}
+                  {translate(category, "name")}
                 </button>
               ))}
             </div>
@@ -97,11 +99,11 @@ export function ProductsPage({
 
       <div className="mt-8 flex items-center justify-between text-sm text-slate-500">
         <span>
-          {filteredProducts.length} {copy.products.showingLabel}
+          {filteredProducts.length} {t("products.showingLabel")}
         </span>
         {hasBackendError ? (
           <span className="rounded-full bg-amber-50 px-3 py-1 text-amber-700">
-            API is currently unavailable
+            {t("status.apiUnavailable")}
           </span>
         ) : null}
       </div>
@@ -115,10 +117,10 @@ export function ProductsPage({
       ) : (
         <section className="mt-10 rounded-[2rem] border border-dashed border-sky-200 bg-white/70 px-6 py-16 text-center">
           <h2 className="text-2xl font-semibold text-slate-950">
-            {copy.products.noResultsTitle}
+            {t("products.noResultsTitle")}
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-600">
-            {copy.products.noResultsDescription}
+            {t("products.noResultsDescription")}
           </p>
         </section>
       )}

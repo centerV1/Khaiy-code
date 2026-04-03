@@ -1,5 +1,5 @@
 import { SellWorkspace } from "@/components/sell/sell-workspace";
-import { getCategories } from "@/lib/api/store";
+import { getCategories } from "@/lib/api/category";
 
 export default async function SellPage({
   params,

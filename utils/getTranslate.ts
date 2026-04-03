@@ -1,16 +1,22 @@
 import { getLocale } from "next-intl/server";
 
-export async function getTranslate<T extends Record<string, unknown>>() {
+export async function getTranslate() {
   const locale = await getLocale();
 
-  return (item: T, baseKey: string): string => {
+  return <T extends object>(item: T, baseKey: string): string => {
+    const record = item as Record<string, unknown>;
     const localizedKey = `${baseKey}_${locale}`;
-    
-    const localizedValue = item[localizedKey as keyof T];
-    const fallbackValue = item[baseKey as keyof T];
+    const englishKey = `${baseKey}_en`;
+
+    const localizedValue = record[localizedKey];
+    const englishValue = record[englishKey];
+    const fallbackValue = record[baseKey];
 
     if (typeof localizedValue === "string" && localizedValue !== "") {
       return localizedValue;
+    }
+    if (typeof englishValue === "string" && englishValue !== "") {
+      return englishValue;
     }
     if (typeof fallbackValue === "string" && fallbackValue !== "") {
       return fallbackValue;

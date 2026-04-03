@@ -3,28 +3,31 @@
 import Link from "next/link";
 import { Download, Library, LogOut, ShieldCheck } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   getMyPurchases,
-  getPurchasedProductDownload,
-} from "@/lib/api/store";
+} from "@/lib/api/users";
 import { getErrorMessage } from "@/lib/api/fetcher";
+import { hasRole } from "@/lib/auth/roles";
+import { getPurchasedProductDownload } from "@/lib/api/products";
 import {
   formatDate,
   formatPrice,
   getPrimaryImage,
-  getProductName,
-  getSiteCopy,
   withLocale,
 } from "@/lib/site";
 import type { PurchaseItem } from "@/lib/types/store";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
+import { useTranslate } from "@/utils/useTranslate";
 
 export function ProfileDashboard({ locale }: { locale: string }) {
-  const copy = getSiteCopy(locale);
+  const t = useTranslations();
+  const translate = useTranslate();
   const { user, status, isAuthenticated, logout } = useAuth();
+  const canViewListings = hasRole(user, "ADMIN");
   const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
@@ -65,7 +68,7 @@ export function ProfileDashboard({ locale }: { locale: string }) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="rounded-[2rem] border border-white/60 bg-white/80 p-8 text-sm text-slate-500 shadow-xl shadow-sky-100/70">
-          Loading profile...
+          {t("status.loadingProfile")}
         </div>
       </div>
     );
@@ -76,13 +79,13 @@ export function ProfileDashboard({ locale }: { locale: string }) {
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-10 shadow-xl shadow-sky-100/70">
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-            {copy.nav.profile}
+            {t("nav.profile")}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
-            {copy.profile.guestTitle}
+            {t("profile.guestTitle")}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            {copy.profile.guestDescription}
+            {t("profile.guestDescription")}
           </p>
           <Link
             className={cn(
@@ -91,7 +94,7 @@ export function ProfileDashboard({ locale }: { locale: string }) {
             )}
             href={withLocale(locale, "/login")}
           >
-            {copy.profile.guestCta}
+            {t("profile.guestCta")}
           </Link>
         </section>
       </div>
@@ -102,15 +105,15 @@ export function ProfileDashboard({ locale }: { locale: string }) {
     <div className="mx-auto max-w-7xl px-4 pb-20 pt-12 sm:px-6 lg:px-8">
       <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-          {copy.nav.profile}
+          {t("nav.profile")}
         </p>
         <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950">
-              {copy.profile.title}
+              {t("profile.title")}
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              {copy.profile.description}
+              {t("profile.description")}
             </p>
           </div>
           <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
@@ -128,7 +131,7 @@ export function ProfileDashboard({ locale }: { locale: string }) {
                 )}
               </span>
               <span>
-                Signed in as <span className="font-semibold">{user.email}</span>
+                {t("labels.signedInAs")} <span className="font-semibold">{user.email}</span>
               </span>
             </div>
             <Button
@@ -136,16 +139,25 @@ export function ProfileDashboard({ locale }: { locale: string }) {
               onClick={() => void logout()}
             >
               <LogOut className="size-4" />
-              {copy.nav.logout}
+              {t("nav.logout")}
             </Button>
           </div>
         </div>
       </section>
 
       <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <MetricCard label="Purchases" value={String(user.purchaseCount)} />
-        <MetricCard label="Listings" value={String(user.productCount)} />
-        <MetricCard label="Provider" value={user.provider} />
+        <MetricCard
+          className={canViewListings ? undefined : "md:col-span-2"}
+          label={t("labels.purchases")}
+          value={String(user.purchaseCount)}
+        />
+        {canViewListings ? (
+          <MetricCard
+            label={t("labels.listings")}
+            value={String(user.productCount)}
+          />
+        ) : null}
+        <MetricCard label={t("labels.provider")} value={user.provider} />
       </div>
 
       <section className="mt-8 rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
@@ -155,10 +167,10 @@ export function ProfileDashboard({ locale }: { locale: string }) {
           </span>
           <div>
             <h2 className="text-2xl font-semibold text-slate-950">
-              {copy.profile.purchasesTitle}
+              {t("profile.purchasesTitle")}
             </h2>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              {copy.profile.purchasesDescription}
+              {t("profile.purchasesDescription")}
             </p>
           </div>
         </div>
@@ -172,11 +184,11 @@ export function ProfileDashboard({ locale }: { locale: string }) {
                 className="grid gap-5 rounded-[2rem] border border-sky-100 bg-white p-5 shadow-sm shadow-sky-100/50 md:grid-cols-[110px_1fr_auto]"
                 key={`${purchase.orderId}-${purchase.product.id}`}
               >
-                <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.25),_rgba(255,255,255,0.92)_60%)]">
+                <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.25),rgba(255,255,255,0.92)_60%)]">
                   {getPrimaryImage(purchase.product) ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      alt={getProductName(purchase.product, locale)}
+                      alt={translate(purchase.product, "name")}
                       className="h-full w-full object-cover"
                       src={getPrimaryImage(purchase.product) ?? ""}
                     />
@@ -186,15 +198,15 @@ export function ProfileDashboard({ locale }: { locale: string }) {
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="text-xl font-semibold text-slate-950">
-                      {getProductName(purchase.product, locale)}
+                      {translate(purchase.product, "name")}
                     </p>
                     <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
                       <ShieldCheck className="size-3.5" />
-                      {copy.profile.ownedLabel}
+                      {t("profile.ownedLabel")}
                     </span>
                   </div>
                   <p className="mt-2 text-sm text-slate-500">
-                    {copy.profile.purchasedOn}{" "}
+                    {t("profile.purchasedOn")}{" "}
                     {formatDate(purchase.purchasedAt, locale)}
                   </p>
                   <p className="mt-3 text-sm font-medium text-slate-700">
@@ -210,15 +222,15 @@ export function ProfileDashboard({ locale }: { locale: string }) {
                   >
                     <Download className="size-4" />
                     {downloadingId === purchase.product.id
-                      ? copy.auth.pending
-                      : copy.profile.download}
+                      ? t("auth.pending")
+                      : t("profile.download")}
                   </Button>
                 </div>
               </article>
             ))
           ) : (
             <div className="rounded-[2rem] border border-dashed border-sky-200 bg-sky-50/60 px-5 py-10 text-center text-sm leading-6 text-slate-500">
-              {copy.common.emptyState}
+              {t("common.emptyState")}
             </div>
           )}
         </div>
@@ -227,9 +239,22 @@ export function ProfileDashboard({ locale }: { locale: string }) {
   );
 }
 
-function MetricCard({ label, value }: { label: string; value: string }) {
+function MetricCard({
+  label,
+  value,
+  className,
+}: {
+  label: string;
+  value: string;
+  className?: string;
+}) {
   return (
-    <div className="rounded-[2rem] border border-white/60 bg-white/88 p-6 shadow-lg shadow-sky-100/60">
+    <div
+      className={cn(
+        "rounded-[2rem] border border-white/60 bg-white/88 p-6 shadow-lg shadow-sky-100/60",
+        className,
+      )}
+    >
       <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{label}</p>
       <p className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
         {value}

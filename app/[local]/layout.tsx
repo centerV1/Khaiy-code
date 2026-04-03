@@ -33,7 +33,7 @@ export default async function RootLayout({
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_26%),radial-gradient(circle_at_85%_5%,_rgba(96,165,250,0.18),_transparent_20%)]" />
               <div className="relative">
                 <Header locale={local} />
-                <main>{children}</main>
+                <main className="pt-20">{children}</main>
               </div>
             </div>
           </AppProviders>

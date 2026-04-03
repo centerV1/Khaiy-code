@@ -2,22 +2,28 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getApiBaseUrl, getErrorMessage } from "@/lib/api/fetcher";
 import { cn } from "@/lib/utils";
-import { getSiteCopy, withLocale } from "@/lib/site";
+import { withLocale } from "@/lib/site";
 import { useAuth } from "@/providers/auth-provider";
 
 export function LoginForm({ locale }: { locale: string }) {
-  const copy = getSiteCopy(locale);
+  const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
-  const [error, setError] = useState<string | null>(null);
+  const oauthError = searchParams.get("error");
+  const [error, setError] = useState<string | null>(oauthError);
   const [isPending, startTransition] = useTransition();
   const apiBaseUrl = getApiBaseUrl();
+
+  useEffect(() => {
+    setError(oauthError);
+  }, [oauthError]);
 
   function onSubmit(formData: FormData) {
     setError(null);
@@ -42,13 +48,13 @@ export function LoginForm({ locale }: { locale: string }) {
     <section className="mx-auto w-full max-w-md rounded-[2rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70 backdrop-blur">
       <div className="space-y-3">
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-          {copy.nav.login}
+          {t("nav.login")}
         </p>
         <h1 className="text-3xl font-semibold tracking-tight text-slate-950">
-          {copy.auth.loginTitle}
+          {t("auth.loginTitle")}
         </h1>
         <p className="text-sm leading-6 text-slate-600">
-          {copy.auth.loginDescription}
+          {t("auth.loginDescription")}
         </p>
       </div>
 
@@ -63,7 +69,7 @@ export function LoginForm({ locale }: { locale: string }) {
           <span className="inline-flex size-5 items-center justify-center rounded-full bg-slate-900 text-[10px] font-bold text-white">
             G
           </span>
-          {copy.auth.continueWithGoogle}
+          {t("auth.continueWithGoogle")}
         </a>
         <a
           className={cn(
@@ -75,20 +81,20 @@ export function LoginForm({ locale }: { locale: string }) {
           <span className="inline-flex size-5 items-center justify-center rounded-full bg-[#1877F2] text-[10px] font-bold text-white">
             f
           </span>
-          {copy.auth.continueWithFacebook}
+          {t("auth.continueWithFacebook")}
         </a>
       </div>
 
       <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-slate-400">
         <span className="h-px flex-1 bg-sky-100" />
-        <span>{copy.auth.orContinueWithEmail}</span>
+        <span>{t("auth.orContinueWithEmail")}</span>
         <span className="h-px flex-1 bg-sky-100" />
       </div>
 
       <form action={onSubmit} className="mt-6 space-y-5">
         <label className="block space-y-2">
           <span className="text-sm font-medium text-slate-700">
-            {copy.auth.email}
+            {t("auth.email")}
           </span>
           <input
             className="h-12 w-full rounded-2xl border border-sky-100 bg-sky-50/60 px-4 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:bg-white"
@@ -101,7 +107,7 @@ export function LoginForm({ locale }: { locale: string }) {
 
         <label className="block space-y-2">
           <span className="text-sm font-medium text-slate-700">
-            {copy.auth.password}
+            {t("auth.password")}
           </span>
           <input
             className="h-12 w-full rounded-2xl border border-sky-100 bg-sky-50/60 px-4 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:bg-white"
@@ -119,17 +125,17 @@ export function LoginForm({ locale }: { locale: string }) {
           disabled={isPending}
           type="submit"
         >
-          {isPending ? copy.auth.pending : copy.auth.submitLogin}
+          {isPending ? t("auth.pending") : t("auth.submitLogin")}
         </Button>
       </form>
 
       <p className="mt-6 text-sm text-slate-500">
-        {copy.auth.swapToSignup}{" "}
+        {t("auth.swapToSignup")}{" "}
         <Link
           className="font-semibold text-sky-700 transition hover:text-sky-500"
           href={withLocale(locale, "/signup")}
         >
-          {copy.nav.signup}
+          {t("nav.signup")}
         </Link>
       </p>
     </section>

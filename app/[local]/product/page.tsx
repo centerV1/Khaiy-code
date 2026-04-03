@@ -1,5 +1,5 @@
 import { ProductsPage } from "@/components/marketplace/products-page";
-import { getMarketplaceBootstrap } from "@/lib/api/store";
+import { getMarketplaceBootstrap } from "@/lib/api/marketplace";
 
 export default async function ProductPage({
   params,

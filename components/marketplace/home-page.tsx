@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { ProductCard } from "@/components/marketplace/product-card";
 import { buttonVariants } from "@/components/ui/button";
-import { formatPrice, getCategoryName, getSiteCopy, withLocale } from "@/lib/site";
+import { formatPrice, withLocale } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import type { Category, ProductSummary } from "@/lib/types/store";
+import { useTranslate } from "@/utils/useTranslate";
 
 type HomePageProps = {
   locale: string;
@@ -22,7 +24,8 @@ export function HomePage({
   categories,
   hasBackendError,
 }: HomePageProps) {
-  const copy = getSiteCopy(locale);
+  const t = useTranslations();
+  const translate = useTranslate();
   const featuredProducts = products.slice(0, 3);
 
   return (
@@ -33,13 +36,13 @@ export function HomePage({
           <div className="flex max-w-2xl flex-col justify-center">
             <p className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.35em] text-sky-700">
               <Sparkles className="size-4" />
-              {copy.home.eyebrow}
+              {t("home.eyebrow")}
             </p>
             <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-              {copy.home.title}
+              {t("home.title")}
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-              {copy.home.description}
+              {t("home.description")}
             </p>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -50,7 +53,7 @@ export function HomePage({
                 )}
                 href={withLocale(locale, "/product")}
               >
-                {copy.home.primaryCta}
+                {t("home.primaryCta")}
                 <ArrowRight className="size-4" />
               </Link>
               <Link
@@ -60,14 +63,13 @@ export function HomePage({
                 )}
                 href={withLocale(locale, "/sell")}
               >
-                {copy.home.secondaryCta}
+                {t("home.secondaryCta")}
               </Link>
             </div>
 
             {hasBackendError ? (
               <div className="mt-8 rounded-3xl border border-amber-200 bg-amber-50/90 px-5 py-4 text-sm leading-6 text-amber-800">
-                Backend data is currently unavailable. The storefront shell is ready,
-                and product data will populate as soon as the NestJS API is running.
+                {t("status.backendUnavailable")}
               </div>
             ) : null}
           </div>
@@ -75,8 +77,8 @@ export function HomePage({
           <div className="grid gap-4 lg:grid-rows-[1.2fr_0.8fr]">
             <div className="relative overflow-hidden rounded-[2.5rem] border border-white/60 bg-[linear-gradient(135deg,_rgba(14,165,233,0.1),_rgba(255,255,255,0.9)_40%,_rgba(59,130,246,0.16))] p-6 shadow-2xl shadow-sky-200/50">
               <div className="absolute inset-x-6 top-6 flex items-center justify-between text-xs font-medium uppercase tracking-[0.3em] text-slate-400">
-                <span>{copy.brand}</span>
-                <span>{products.length} assets</span>
+                <span>{t("brand")}</span>
+                <span>{products.length} {t("labels.assets")}</span>
               </div>
               <div className="mt-14 space-y-4">
                 {featuredProducts.map((product) => (
@@ -88,11 +90,11 @@ export function HomePage({
                       <div className="space-y-2">
                         <p className="text-xs uppercase tracking-[0.35em] text-sky-600">
                           {product.category[0]
-                            ? getCategoryName(product.category[0], locale)
-                            : copy.nav.products}
+                            ? translate(product.category[0], "name")
+                            : t("nav.products")}
                         </p>
                         <p className="text-xl font-semibold tracking-tight text-slate-950">
-                          {locale === "th" ? product.name_th : product.name_en}
+                          {translate(product, "name")}
                         </p>
                       </div>
                       <p className="text-sm font-semibold text-slate-500">
@@ -107,24 +109,24 @@ export function HomePage({
             <div className="grid gap-4 md:grid-cols-2">
               <div className="rounded-[2rem] border border-sky-100 bg-white/85 p-5 shadow-lg shadow-sky-100/60">
                 <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-                  {copy.home.categoryTitle}
+                  {t("home.categoryTitle")}
                 </p>
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">
                   {categories.length}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {copy.home.categoryDescription}
+                  {t("home.categoryDescription")}
                 </p>
               </div>
               <div className="rounded-[2rem] border border-sky-100 bg-slate-950 p-5 shadow-lg shadow-slate-300/40">
                 <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-300">
-                  Seller flow
+                  {t("labels.sellerFlow")}
                 </p>
                 <p className="mt-4 text-3xl font-semibold tracking-tight text-white">
-                  upload + preview + checkout
+                  {t("labels.uploadPreviewCheckout")}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-slate-300">
-                  {copy.home.sellerDescription}
+                  {t("home.sellerDescription")}
                 </p>
               </div>
             </div>
@@ -136,17 +138,17 @@ export function HomePage({
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-              {copy.home.featuredTitle}
+              {t("home.featuredTitle")}
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">
-              {copy.home.featuredDescription}
+              {t("home.featuredDescription")}
             </h2>
           </div>
           <Link
             className="text-sm font-semibold text-sky-700 transition hover:text-sky-500"
             href={withLocale(locale, "/product")}
           >
-            {copy.common.browse}
+            {t("common.browse")}
           </Link>
         </div>
 
@@ -160,13 +162,13 @@ export function HomePage({
       <section className="mx-auto grid max-w-7xl gap-10 px-4 pt-20 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
         <div>
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-            {copy.home.sellerTitle}
+            {t("home.sellerTitle")}
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">
-            {copy.home.finalTitle}
+            {t("home.finalTitle")}
           </h2>
           <p className="mt-4 max-w-lg text-base leading-7 text-slate-600">
-            {copy.home.finalDescription}
+            {t("home.finalDescription")}
           </p>
         </div>
 
@@ -177,11 +179,11 @@ export function HomePage({
               key={category.id}
             >
               <p className="text-lg font-semibold text-slate-950">
-                {getCategoryName(category, locale)}
+                {translate(category, "name")}
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                {(category._count?.products ?? 0).toString()} products connected
-                to this catalog category.
+                {(category._count?.products ?? 0).toString()}{" "}
+                {t("labels.productsConnectedToCategory")}
               </p>
             </div>
           ))}

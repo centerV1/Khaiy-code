@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 
 import { ProductDetailPage } from "@/components/marketplace/product-detail-page";
-import { getMarketplaceBootstrap, getProduct } from "@/lib/api/store";
+import { getMarketplaceBootstrap } from "@/lib/api/marketplace";
+import { getProduct } from "@/lib/api/products";
 
 export default async function ProductDetailRoute({
   params,

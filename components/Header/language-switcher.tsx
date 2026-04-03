@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 import { FlagIcon } from "@/components/Header/flag-icon";
 import { cn } from "@/lib/utils";
@@ -29,8 +28,10 @@ export function LanguageSwitcher({
   mobile = false,
 }: LanguageSwitcherProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,8 +51,6 @@ export function LanguageSwitcher({
     LANGUAGE_OPTIONS.find((item) => item.locale === locale) ??
     LANGUAGE_OPTIONS[1];
 
-  const search = searchParams.toString();
-
   return (
     <div
       className={cn("relative", mobile ? "w-full" : "shrink-0")}
@@ -60,6 +59,7 @@ export function LanguageSwitcher({
       <button
         className={cn(
           "inline-flex items-center gap-3 rounded-full border border-sky-100 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm shadow-sky-100/60 transition hover:border-sky-200 hover:text-slate-950",
+          isPending && "pointer-events-none opacity-80",
           mobile ? "w-full justify-between rounded-2xl px-4 py-3" : "h-11",
         )}
         onClick={() => setOpen((value) => !value)}
@@ -89,23 +89,38 @@ export function LanguageSwitcher({
           <div className="space-y-1">
             {LANGUAGE_OPTIONS.map((item) => {
               const isActive = item.locale === activeLanguage.locale;
-              const href = getLocaleHref(pathname, item.locale, search);
 
               return (
-                <Link
+                <button
                   className={cn(
-                    "flex items-center justify-between rounded-[1.6rem] px-4 py-3 text-sm transition",
+                    "flex w-full items-center justify-between rounded-[1.6rem] px-4 py-3 text-sm transition",
                     isActive
                       ? "bg-white text-slate-950 shadow-md shadow-sky-100/70"
                       : "text-slate-500 hover:bg-white/80 hover:text-slate-900",
                   )}
-                  href={href}
                   key={item.locale}
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    if (isActive) {
+                      setOpen(false);
+                      return;
+                    }
+
+                    const href = getLocaleHref(
+                      pathname,
+                      item.locale,
+                      searchParams.toString(),
+                    );
+
+                    startTransition(() => {
+                      router.replace(href, { scroll: false });
+                      setOpen(false);
+                    });
+                  }}
+                  type="button"
                 >
                   <span className="text-[15px] font-medium">{item.label}</span>
                   <FlagIcon className="size-11" locale={item.locale} />
-                </Link>
+                </button>
               );
             })}
           </div>

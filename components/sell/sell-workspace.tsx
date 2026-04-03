@@ -3,20 +3,23 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { Package, Trash2, UploadCloud } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import { deleteProduct, createProduct, getMyProducts } from "@/lib/api/store";
+import {
+  createProduct,
+  deleteProduct,
+  getMyProducts,
+} from "@/lib/api/products";
 import { getErrorMessage } from "@/lib/api/fetcher";
 import {
   formatPrice,
-  getCategoryName,
-  getProductName,
-  getSiteCopy,
   withLocale,
 } from "@/lib/site";
 import type { Category, SellerProduct } from "@/lib/types/store";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
+import { useTranslate } from "@/utils/useTranslate";
 
 type SellWorkspaceProps = {
   locale: string;
@@ -24,7 +27,8 @@ type SellWorkspaceProps = {
 };
 
 export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
-  const copy = getSiteCopy(locale);
+  const t = useTranslations();
+  const translate = useTranslate();
   const { user, status, isAuthenticated } = useAuth();
   const [products, setProducts] = useState<SellerProduct[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -81,7 +85,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
         await loadListings();
 
         formRef.current?.reset();
-        setFeedback("Product published successfully.");
+        setFeedback(t("status.productPublishedSuccess"));
       } catch (submitError) {
         setError(getErrorMessage(submitError));
       }
@@ -96,7 +100,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       try {
         await deleteProduct(productId);
         await loadListings();
-        setFeedback("Product removed successfully.");
+        setFeedback(t("status.productRemovedSuccess"));
       } catch (deleteError) {
         setError(getErrorMessage(deleteError));
       }
@@ -107,7 +111,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="rounded-[2rem] border border-white/60 bg-white/80 p-8 text-sm text-slate-500 shadow-xl shadow-sky-100/70">
-          Loading seller workspace...
+          {t("status.loadingSellerWorkspace")}
         </div>
       </div>
     );
@@ -118,13 +122,13 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-10 shadow-xl shadow-sky-100/70">
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-            {copy.nav.sell}
+            {t("nav.sell")}
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
-            {copy.sell.guestTitle}
+            {t("sell.guestTitle")}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            {copy.sell.guestDescription}
+            {t("sell.guestDescription")}
           </p>
           <Link
             className={cn(
@@ -133,7 +137,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             )}
             href={withLocale(locale, "/login")}
           >
-            {copy.sell.guestCta}
+            {t("sell.guestCta")}
           </Link>
         </section>
       </div>
@@ -144,19 +148,19 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
     <div className="mx-auto max-w-7xl px-4 pb-20 pt-12 sm:px-6 lg:px-8">
       <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
-          {copy.nav.sell}
+          {t("nav.sell")}
         </p>
         <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950">
-              {copy.sell.title}
+              {t("sell.title")}
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              {copy.sell.description}
+              {t("sell.description")}
             </p>
           </div>
           <div className="rounded-[2rem] border border-sky-100 bg-sky-50/80 px-5 py-4 text-sm text-slate-700">
-            Logged in as <span className="font-semibold">{user?.email}</span>
+            {t("labels.loggedInAs")} <span className="font-semibold">{user?.email}</span>
           </div>
         </div>
       </section>
@@ -173,27 +177,27 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             </span>
             <div>
               <h2 className="text-2xl font-semibold text-slate-950">
-                {copy.sell.formTitle}
+                {t("sell.formTitle")}
               </h2>
               <p className="mt-1 text-sm leading-6 text-slate-600">
-                {copy.sell.formDescription}
+                {t("sell.formDescription")}
               </p>
             </div>
           </div>
 
           <div className="mt-8 grid gap-5 md:grid-cols-2">
-            <Field label={copy.sell.fields.nameTh} name="name_th" />
-            <Field label={copy.sell.fields.nameEn} name="name_en" />
+            <Field label={t("sell.fields.nameTh")} name="name_th" />
+            <Field label={t("sell.fields.nameEn")} name="name_en" />
             <TextAreaField
-              label={copy.sell.fields.descriptionTh}
+              label={t("sell.fields.descriptionTh")}
               name="description_th"
             />
             <TextAreaField
-              label={copy.sell.fields.descriptionEn}
+              label={t("sell.fields.descriptionEn")}
               name="description_en"
             />
             <Field
-              label={copy.sell.fields.price}
+              label={t("sell.fields.price")}
               min="1"
               name="price"
               step="1"
@@ -201,13 +205,13 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             />
             <FileField
               accept=".zip,application/zip"
-              label={copy.sell.fields.file}
+              label={t("sell.fields.file")}
               name="file"
             />
             <div className="md:col-span-2">
               <FileField
                 accept="image/png,image/jpeg,image/jpg"
-                label={copy.sell.fields.images}
+                label={t("sell.fields.images")}
                 multiple
                 name="images"
               />
@@ -216,7 +220,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
 
           <div className="mt-6">
             <p className="text-sm font-medium text-slate-700">
-              {copy.sell.fields.categories}
+              {t("sell.fields.categories")}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {categories.map((category) => (
@@ -230,7 +234,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
                     type="checkbox"
                     value={category.id}
                   />
-                  {getCategoryName(category, locale)}
+                  {translate(category, "name")}
                 </label>
               ))}
             </div>
@@ -239,8 +243,12 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
           {feedback ? <p className="mt-5 text-sm text-emerald-600">{feedback}</p> : null}
           {error ? <p className="mt-5 text-sm text-red-500">{error}</p> : null}
 
-          <Button className="mt-8 h-12 rounded-full px-6" disabled={isPending}>
-            {isPending ? copy.sell.submitting : copy.sell.submit}
+          <Button
+            className="mt-8 h-12 rounded-full px-6"
+            disabled={isPending}
+            type="submit"
+          >
+            {isPending ? t("sell.submitting") : t("sell.submit")}
           </Button>
         </form>
 
@@ -251,10 +259,10 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             </span>
             <div>
               <h2 className="text-2xl font-semibold text-slate-950">
-                {copy.sell.listingsTitle}
+                {t("sell.listingsTitle")}
               </h2>
               <p className="mt-1 text-sm leading-6 text-slate-600">
-                {copy.sell.listingsDescription}
+                {t("sell.listingsDescription")}
               </p>
             </div>
           </div>
@@ -269,7 +277,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-lg font-semibold text-slate-950">
-                        {getProductName(product, locale)}
+                        {translate(product, "name")}
                       </p>
                       <p className="mt-2 text-sm text-slate-500">
                         {formatPrice(product.price, locale)}
@@ -280,7 +288,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
                             className="rounded-full bg-sky-50 px-3 py-1 text-xs font-medium text-sky-700"
                             key={category.id}
                           >
-                            {getCategoryName(category, locale)}
+                            {translate(category, "name")}
                           </span>
                         ))}
                       </div>
@@ -297,7 +305,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
               ))
             ) : (
               <div className="rounded-[2rem] border border-dashed border-sky-200 bg-sky-50/60 px-5 py-10 text-center text-sm leading-6 text-slate-500">
-                {copy.common.emptyState}
+                {t("common.emptyState")}
               </div>
             )}
           </div>
