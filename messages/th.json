@@ -51,6 +51,9 @@
     "guestTitle": "เข้าสู่ระบบก่อนเริ่มลงสินค้า",
     "guestDescription": "seller workspace จะผูกกับบัญชีของคุณ เพื่อให้จัดการรายการขายและออเดอร์ได้ในภายหลัง",
     "guestCta": "ไปหน้าเข้าสู่ระบบ",
+    "restrictedTitle": "ต้องมีสิทธิ์ผู้ขายก่อน",
+    "restrictedDescription": "เฉพาะบัญชีที่มีสิทธิ์ SELLER หรือ ADMIN เท่านั้นที่สามารถเข้า seller workspace และจัดการรายการขายได้",
+    "restrictedCta": "ไปที่โปรไฟล์",
     "formTitle": "ลงสินค้าชิ้นใหม่",
     "formDescription": "ตั้งชื่อให้ชัด อธิบาย use case ให้ครบ และอัปโหลด source file เวอร์ชันที่พร้อมขาย",
     "listingsTitle": "สินค้าที่คุณลงขาย",
@@ -106,6 +109,10 @@
     "close": "ปิดตะกร้า",
     "subtotal": "ยอดรวม",
     "remove": "ลบออก"
+  },
+  "announcement": {
+    "sellInvite": "ถ้าอยากสมัครขายโค้ดกับเราให้กดที่นี่",
+    "subject": "สมัครเป็นผู้ขายกับ Khaiy Code"
   },
   "footer": {
     "emailPrimary": "อีเมล Khaiy Code",

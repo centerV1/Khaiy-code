@@ -1,22 +1,35 @@
+"use client";
+
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
+import { hasRole } from "@/lib/auth/roles";
 import { withLocale } from "@/lib/site";
+import { useAuth } from "@/providers/auth-provider";
 
 type FooterProps = {
   locale: string;
 };
 
-export async function Footer({ locale }: FooterProps) {
-  const t = await getTranslations();
+export function Footer({ locale }: FooterProps) {
+  const t = useTranslations();
+  const { user } = useAuth();
+  const canAccessSell = hasRole(user, "SELLER", "ADMIN");
 
   const links = [
     { href: withLocale(locale, "/product"), label: t("footer.links.products") },
-    { href: withLocale(locale, "/sell"), label: t("footer.links.sellers") },
     { href: withLocale(locale, "/profile"), label: t("footer.links.profile") },
     { href: withLocale(locale, "/"), label: t("footer.links.about") },
   ];
+
+  const visibleLinks = canAccessSell
+    ? [
+        links[0],
+        { href: withLocale(locale, "/sell"), label: t("footer.links.sellers") },
+        ...links.slice(1),
+      ]
+    : links;
 
   const contactLink = {
     href: "mailto:hello@khaiycode.com",
@@ -24,7 +37,7 @@ export async function Footer({ locale }: FooterProps) {
   };
 
   return (
-    <footer className="mx-1 mb-4 mt-14 rounded-[2rem] border border-slate-200/80 bg-white/95 shadow-[0_16px_48px_-38px_rgba(15,23,42,0.14)] sm:mx-4 lg:mx-6">
+    <footer className="mx-1 mb-4 mt-14 rounded-[2rem] bg-white shadow-[0_16px_48px_-38px_rgba(15,23,42,0.14)] sm:mx-4 lg:mx-6">
       <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8 md:px-10 md:py-12">
         <div className="flex flex-col gap-8">
           <div className="flex items-start justify-between gap-6">
@@ -47,7 +60,7 @@ export async function Footer({ locale }: FooterProps) {
           </div>
 
           <nav className="flex flex-wrap items-center gap-y-3 text-[15px] text-slate-800">
-            {links.map((item, index) => (
+            {visibleLinks.map((item, index) => (
               <div
                 className="flex items-center"
                 key={`${item.href}-${item.label}-${index}`}
@@ -58,7 +71,7 @@ export async function Footer({ locale }: FooterProps) {
                 >
                   {item.label}
                 </Link>
-                {index < links.length - 1 ? (
+                {index < visibleLinks.length - 1 ? (
                   <span
                     aria-hidden="true"
                     className="px-4 text-slate-300 sm:px-5"
