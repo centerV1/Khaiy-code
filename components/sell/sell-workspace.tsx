@@ -12,6 +12,7 @@ import {
   getMyProducts,
 } from "@/lib/api/products";
 import { getErrorMessage } from "@/lib/api/fetcher";
+import { hasRole } from "@/lib/auth/roles";
 import {
   formatPrice,
   withLocale,
@@ -30,6 +31,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   const t = useTranslations();
   const translate = useTranslate();
   const { user, status, isAuthenticated } = useAuth();
+  const canAccessSell = hasRole(user, "SELLER", "ADMIN");
   const [products, setProducts] = useState<SellerProduct[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !canAccessSell) {
       return;
     }
 
@@ -57,7 +59,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [isAuthenticated]);
+  }, [canAccessSell, isAuthenticated]);
 
   function handleSubmit(formData: FormData) {
     setFeedback(null);
@@ -138,6 +140,33 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             href={withLocale(locale, "/login")}
           >
             {t("sell.guestCta")}
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
+  if (!canAccessSell) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+        <section className="rounded-[2.5rem] border border-white/60 bg-white/88 p-10 shadow-xl shadow-sky-100/70">
+          <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
+            {t("nav.sell")}
+          </p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+            {t("sell.restrictedTitle")}
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+            {t("sell.restrictedDescription")}
+          </p>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "mt-8 h-12 rounded-full px-6",
+            )}
+            href={withLocale(locale, "/profile")}
+          >
+            {t("sell.restrictedCta")}
           </Link>
         </section>
       </div>

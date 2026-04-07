@@ -9,6 +9,8 @@ import { useTranslations } from "next-intl";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { LanguageSwitcher } from "@/components/Header/language-switcher";
 import { buttonVariants } from "@/components/ui/button";
+import { CurvedLoop } from "@/components/ui/curved-loop";
+import { hasRole } from "@/lib/auth/roles";
 import { getInitials, withLocale } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
@@ -22,17 +24,31 @@ export function Header({ locale }: HeaderProps) {
   const pathname = usePathname();
   const t = useTranslations();
   const { user, isAuthenticated } = useAuth();
+  const canAccessSell = hasRole(user, "SELLER", "ADMIN");
   const { count } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const normalizedPathname = pathname.replace(/\/+$/, "") || "/";
+  const homePath = withLocale(locale, "/");
+  const isHomePath = normalizedPathname === homePath;
+  const showAnnouncement = isHomePath && !isScrolled;
+  const announcementHref = withLocale(locale, "/sell");
+  const announcementText = t("announcement.sellInvite");
 
   const navigation = [
     { href: withLocale(locale, "/"), label: t("nav.home") },
     { href: withLocale(locale, "/product"), label: t("nav.products") },
-    { href: withLocale(locale, "/sell"), label: t("nav.sell") },
     { href: withLocale(locale, "/profile"), label: t("nav.profile") },
   ];
+  const visibleNavigation = canAccessSell
+    ? [
+        navigation[0],
+        navigation[1],
+        { href: withLocale(locale, "/sell"), label: t("nav.sell") },
+        navigation[2],
+      ]
+    : navigation;
 
   const isActive = (href: string) =>
     href === withLocale(locale, "/")
@@ -88,7 +104,7 @@ export function Header({ locale }: HeaderProps) {
             </Link>
 
             <nav className="hidden items-center gap-1 md:flex">
-              {navigation.map((item) => (
+              {visibleNavigation.map((item) => (
                 <Link
                   className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                     isActive(item.href)
@@ -204,12 +220,38 @@ export function Header({ locale }: HeaderProps) {
           </div>
         </div>
 
+        <div
+          className={cn(
+            "overflow-hidden transition-all duration-300",
+            showAnnouncement
+              ? "max-h-9 border-t border-sky-900/20 opacity-100"
+              : "max-h-0 border-t border-transparent opacity-0",
+          )}
+        >
+          <Link
+            className="block bg-[linear-gradient(90deg,#050b24,#15368f,#050b24)] text-white"
+            href={announcementHref}
+          >
+            <div className="overflow-hidden px-4 sm:px-6 lg:px-8">
+              <CurvedLoop
+                className="py-2 text-sm font-medium text-sky-50"
+                curveAmount={0}
+                direction="right"
+                interactive
+                marqueeText={announcementText}
+                // marqueeText={announcementText}
+                speed={1}
+              />
+            </div>
+          </Link>
+        </div>
+
         {mobileMenuOpen ? (
           <div className="border-t border-sky-100 px-4 py-4 md:hidden">
             <LanguageSwitcher locale={locale} mobile />
 
             <nav className="space-y-2">
-              {navigation.map((item) => (
+              {visibleNavigation.map((item) => (
                 <Link
                   className={`block rounded-2xl px-4 py-3 text-sm font-medium ${
                     isActive(item.href)

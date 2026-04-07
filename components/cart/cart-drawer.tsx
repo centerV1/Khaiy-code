@@ -67,7 +67,6 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
       >
         <div className="flex items-center justify-between border-b border-sky-100 px-5 py-4">
           <div>
-            <p className="text-sm font-medium text-sky-600">{t("nav.cart")}</p>
             <h2 className="text-xl font-semibold text-slate-950">
               {t("cart.title")}
             </h2>

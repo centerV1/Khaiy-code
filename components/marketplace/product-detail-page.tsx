@@ -62,6 +62,7 @@ export function ProductDetailPage({
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               src={primaryImage}
+              loading="lazy"
             />
           ) : (
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,_rgba(14,165,233,0.35),_transparent_30%),linear-gradient(135deg,_rgba(15,23,42,0.08),_rgba(14,165,233,0.25))]" />

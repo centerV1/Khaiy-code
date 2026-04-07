@@ -51,6 +51,9 @@
     "guestTitle": "Sign in before listing products",
     "guestDescription": "Your seller workspace uses your account session so you can manage products and orders later.",
     "guestCta": "Go to login",
+    "restrictedTitle": "Seller access is required",
+    "restrictedDescription": "Only accounts with SELLER or ADMIN access can open this workspace and manage listings.",
+    "restrictedCta": "Go to profile",
     "formTitle": "New listing",
     "formDescription": "Keep product naming clean, describe the use case clearly, and upload the final source file.",
     "listingsTitle": "Your current listings",
@@ -106,6 +109,25 @@
     "close": "Close cart",
     "subtotal": "Subtotal",
     "remove": "Remove"
+  },
+  "announcement": {
+    "sellInvite": "If you want to apply to sell code with us, click here.",
+    "subject": "Seller application - Khaiy Code"
+  },
+  "footer": {
+    "emailPrimary": "Email Khaiy Code",
+    "copyright": "© 2026 Khaiy Code",
+    "links": {
+      "products": "Products",
+      "sellers": "Sellers",
+      "partnerships": "Partnerships",
+      "profile": "Profile",
+      "library": "Library",
+      "blog": "Blog",
+      "about": "About",
+      "license": "Licence",
+      "privacy": "Privacy"
+    }
   },
   "labels": {
     "seller": "Seller",
