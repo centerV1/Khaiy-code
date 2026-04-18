@@ -33,7 +33,7 @@ export function Header({ locale }: HeaderProps) {
   const homePath = withLocale(locale, "/");
   const isHomePath = normalizedPathname === homePath;
   const showAnnouncement = isHomePath && !isScrolled;
-  const announcementHref = withLocale(locale, "/sell");
+  const announcementHref = withLocale(locale, "/product");
   const announcementText = t("announcement.sellInvite");
 
   const navigation = [

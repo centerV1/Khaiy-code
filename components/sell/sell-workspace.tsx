@@ -32,6 +32,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   const translate = useTranslate();
   const { user, status, isAuthenticated } = useAuth();
   const canAccessSell = hasRole(user, "SELLER", "ADMIN");
+  const canDeleteProducts = hasRole(user, "ADMIN");
   const [products, setProducts] = useState<SellerProduct[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +96,10 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   }
 
   function handleDelete(productId: number) {
+    if (!canDeleteProducts) {
+      return;
+    }
+
     setFeedback(null);
     setError(null);
 
@@ -157,7 +162,13 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             {t("sell.restrictedTitle")}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            {t("sell.restrictedDescription")}
+            {t("sell.restrictedDescription")}{" "}
+            <a
+              className="font-medium text-sky-700 underline decoration-sky-300 underline-offset-4 transition hover:text-sky-800"
+              href="mailto:khaiycode@gmail.com"
+            >
+              khaiycode@gmail.com
+            </a>
           </p>
           <Link
             className={cn(
@@ -322,13 +333,15 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
                         ))}
                       </div>
                     </div>
-                    <button
-                      className="inline-flex size-10 items-center justify-center rounded-full border border-sky-100 text-slate-500 transition hover:border-red-200 hover:text-red-500"
-                      onClick={() => handleDelete(product.id)}
-                      type="button"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
+                    {canDeleteProducts ? (
+                      <button
+                        className="inline-flex size-10 items-center justify-center rounded-full border border-sky-100 text-slate-500 transition hover:border-red-200 hover:text-red-500"
+                        onClick={() => handleDelete(product.id)}
+                        type="button"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    ) : null}
                   </div>
                 </article>
               ))
