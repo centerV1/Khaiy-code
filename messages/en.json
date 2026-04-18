@@ -52,7 +52,7 @@
     "guestDescription": "Your seller workspace uses your account session so you can manage products and orders later.",
     "guestCta": "Go to login",
     "restrictedTitle": "Seller access is required",
-    "restrictedDescription": "Only accounts with SELLER or ADMIN access can open this workspace and manage listings.",
+    "restrictedDescription": "Please contact us at",
     "restrictedCta": "Go to profile",
     "formTitle": "New listing",
     "formDescription": "Keep product naming clean, describe the use case clearly, and upload the final source file.",
@@ -111,8 +111,8 @@
     "remove": "Remove"
   },
   "announcement": {
-    "sellInvite": "If you want to apply to sell code with us, click here.",
-    "subject": "Seller application - Khaiy Code"
+    "sellInvite": "Looking for the right code product? Click here to explore our catalog.",
+    "subject": "Browse products - Khaiy Code"
   },
   "footer": {
     "emailPrimary": "Email Khaiy Code",

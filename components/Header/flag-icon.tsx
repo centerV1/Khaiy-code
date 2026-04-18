@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import { cn } from "@/lib/utils";
 
 type FlagIconProps = {
@@ -6,36 +8,26 @@ type FlagIconProps = {
 };
 
 export function FlagIcon({ locale, className }: FlagIconProps) {
+  const clipPathId = useId();
+
   return (
     <span
       aria-hidden="true"
       className={cn(
-        "inline-flex overflow-hidden rounded-full border border-white/80 shadow-sm shadow-sky-100/70",
+        "inline-flex shrink-0 overflow-hidden rounded-full border border-white/85 bg-white p-0.5 shadow-sm shadow-sky-100/70 ring-1 ring-slate-200/35",
         className,
       )}
     >
-      {locale === "th" ? <ThaiFlag /> : <UkFlag />}
+      {locale === "th" ? (
+        <ThaiFlag clipPathId={clipPathId} />
+      ) : (
+        <EnglishFlag clipPathId={clipPathId} />
+      )}
     </span>
   );
 }
 
-function ThaiFlag() {
-  return (
-    <svg
-      className="h-full w-full"
-      fill="none"
-      viewBox="0 0 64 64"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect fill="#C81E3A" height="64" width="64" />
-      <rect fill="white" height="11" width="64" y="13" />
-      <rect fill="#2448A6" height="16" width="64" y="24" />
-      <rect fill="white" height="11" width="64" y="40" />
-    </svg>
-  );
-}
-
-function UkFlag() {
+function ThaiFlag({ clipPathId }: { clipPathId: string }) {
   return (
     <svg
       className="h-full w-full"
@@ -44,24 +36,51 @@ function UkFlag() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <clipPath id="uk-circle">
+        <clipPath id={clipPathId}>
           <circle cx="32" cy="32" r="32" />
         </clipPath>
       </defs>
-      <g clipPath="url(#uk-circle)">
-        <rect fill="#1F3F95" height="64" width="64" />
+      <g clipPath={`url(#${clipPathId})`}>
+        <rect fill="#C81E3A" height="64" width="64" />
+        <rect fill="white" height="10.67" width="64" y="10.67" />
+        <rect fill="#2448A6" height="21.33" width="64" y="21.33" />
+        <rect fill="white" height="10.67" width="64" y="42.66" />
+      </g>
+    </svg>
+  );
+}
 
-        <path d="M-6 6L6 -6L70 58L58 70L-6 6Z" fill="white" />
-        <path d="M58 -6L70 6L6 70L-6 58L58 -6Z" fill="white" />
+function EnglishFlag({ clipPathId }: { clipPathId: string }) {
+  return (
+    <svg
+      className="h-full w-full"
+      fill="none"
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <clipPath id={clipPathId}>
+          <circle cx="32" cy="32" r="32" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipPathId})`}>
+        <circle cx="32" cy="32" fill="#1F4AA8" r="32" />
 
-        <path d="M-6 10L2 2L66 66L58 74L-6 10Z" fill="#C81E3A" />
-        <path d="M54 -6L62 2L-2 66L-10 58L54 -6Z" fill="#C81E3A" />
+        <g stroke="white" strokeWidth="15">
+          <path d="M0 0L64 64" />
+          <path d="M64 0L0 64" />
+        </g>
 
-        <rect fill="white" height="18" width="64" y="23" />
-        <rect fill="white" height="64" width="18" x="23" />
+        <g stroke="#D81E3A" strokeWidth="7">
+          <path d="M0 0L64 64" />
+          <path d="M64 0L0 64" />
+        </g>
 
-        <rect fill="#C81E3A" height="10" width="64" y="27" />
-        <rect fill="#C81E3A" height="64" width="10" x="27" />
+        <rect fill="white" height="20" width="64" y="22" />
+        <rect fill="white" height="64" width="20" x="22" />
+
+        <rect fill="#D81E3A" height="12" width="64" y="26" />
+        <rect fill="#D81E3A" height="64" width="12" x="26" />
       </g>
     </svg>
   );
