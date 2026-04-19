@@ -118,13 +118,14 @@
     "emailPrimary": "อีเมล Khaiy Code",
     "copyright": "© 2026 Khaiy Code",
     "links": {
+      "home": "หน้าหลัก",
       "products": "สินค้า",
       "sellers": "ผู้ขาย",
       "partnerships": "พาร์ตเนอร์",
       "profile": "โปรไฟล์",
       "library": "คลังสินค้า",
       "blog": "บล็อก",
-      "about": "เกี่ยวกับ Khaiy Code",
+      "about": "เกี่ยวกับ",
       "license": "ลิขสิทธิ์",
       "privacy": "ความเป็นส่วนตัว"
     }

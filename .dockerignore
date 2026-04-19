@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+.git
+.DS_Store
+.env*
+!.env.example
+!.env.docker.example
+npm-debug.log*
