@@ -20,19 +20,23 @@ export class ApiError extends Error {
   }
 }
 
-const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"
-).replace(/\/$/, "");
-
 export function getApiBaseUrl() {
-  return API_BASE_URL;
+  const publicApiBaseUrl =
+    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+  const serverApiBaseUrl =
+    process.env.API_INTERNAL_URL ?? publicApiBaseUrl;
+
+  return (
+    (typeof window === "undefined" ? serverApiBaseUrl : publicApiBaseUrl)
+      .replace(/\/$/, "")
+  );
 }
 
 export async function apiFetch<T>(
   path: string,
   init: ApiRequestInit = {},
 ): Promise<T> {
-  const url = `${API_BASE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  const url = `${getApiBaseUrl()}${path.startsWith("/") ? path : `/${path}`}`;
   const headers = new Headers(init.headers);
   const body = serializeBody(init.body, headers);
   const requestCache =

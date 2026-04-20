@@ -2,8 +2,10 @@
 
 import { useDeferredValue, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 import { ProductCard } from "@/components/marketplace/product-card";
+import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import { useTranslate } from "@/utils/useTranslate";
 import type { Category, ProductSummary } from "@/lib/types/store";
 
@@ -22,9 +24,14 @@ export function ProductsPage({
 }: ProductsPageProps) {
   const t = useTranslations();
   const translate = useTranslate();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const deferredQuery = useDeferredValue(query);
+
+  useRealtimeEvents(["productUpdate", "categoryUpdate"], () => {
+    router.refresh();
+  });
 
   const filteredProducts = products.filter((product) => {
     const normalizedQuery = deferredQuery.trim().toLowerCase();

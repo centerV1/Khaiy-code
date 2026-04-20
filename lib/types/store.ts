@@ -14,6 +14,11 @@ export interface Category {
   };
 }
 
+export interface CreateCategoryPayload {
+  name_th: string;
+  name_en: string;
+}
+
 export interface ProductImage {
   id: number;
   imageUrl: string | null;

@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Download, ShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { ProductCard } from "@/components/marketplace/product-card";
+import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import { Button } from "@/components/ui/button";
 import {
   formatDate,
@@ -32,6 +34,7 @@ export function ProductDetailPage({
 }: ProductDetailPageProps) {
   const t = useTranslations();
   const translate = useTranslate();
+  const router = useRouter();
   const { addItem, hasProduct, removeItem } = useCart();
   const { buyNow, checkoutError, isPending, isReady } =
     useDirectCheckout(locale);
@@ -42,6 +45,10 @@ export function ProductDetailPage({
   const categoryNames = product.category.map((category) =>
     translate(category, "name"),
   );
+
+  useRealtimeEvents(["productUpdate", "categoryUpdate"], () => {
+    router.refresh();
+  });
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-20 pt-12 sm:px-6 lg:px-8">

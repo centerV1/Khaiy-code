@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Package, Trash2, UploadCloud } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -13,6 +14,7 @@ import {
 } from "@/lib/api/products";
 import { getErrorMessage } from "@/lib/api/fetcher";
 import { hasRole } from "@/lib/auth/roles";
+import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import {
   formatPrice,
   withLocale,
@@ -30,6 +32,7 @@ type SellWorkspaceProps = {
 export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   const t = useTranslations();
   const translate = useTranslate();
+  const router = useRouter();
   const { user, status, isAuthenticated } = useAuth();
   const canAccessSell = hasRole(user, "SELLER", "ADMIN");
   const canDeleteProducts = hasRole(user, "ADMIN");
@@ -61,6 +64,14 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       window.clearTimeout(timeoutId);
     };
   }, [canAccessSell, isAuthenticated]);
+
+  useRealtimeEvents(["productUpdate", "categoryUpdate"], () => {
+    if (isAuthenticated && canAccessSell) {
+      void loadListings();
+    }
+
+    router.refresh();
+  });
 
   function handleSubmit(formData: FormData) {
     setFeedback(null);

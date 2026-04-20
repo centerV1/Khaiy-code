@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { ProductCard } from "@/components/marketplace/product-card";
+import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import { buttonVariants } from "@/components/ui/button";
 import { formatPrice, withLocale } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -26,7 +28,12 @@ export function HomePage({
 }: HomePageProps) {
   const t = useTranslations();
   const translate = useTranslate();
+  const router = useRouter();
   const featuredProducts = products.slice(0, 3);
+
+  useRealtimeEvents(["productUpdate", "categoryUpdate"], () => {
+    router.refresh();
+  });
 
   return (
     <div className="pb-20">

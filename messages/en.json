@@ -71,6 +71,30 @@
       "categories": "Categories"
     }
   },
+  "admin": {
+    "eyebrow": "Admin",
+    "title": "Admin workspace",
+    "description": "Manage foundational marketplace data from one place. Categories are available now, and this area is ready for more admin tools later.",
+    "guestTitle": "Login before opening admin tools",
+    "guestDescription": "This page is reserved for administrators so protected management actions stay behind your account session.",
+    "guestCta": "Go to login",
+    "restrictedTitle": "Admin access is required",
+    "restrictedDescription": "Only administrators can open this page and use management tools.",
+    "restrictedCta": "Go to profile",
+    "categoryFormTitle": "Create category",
+    "categoryFormDescription": "Add clean Thai and English labels so products stay organized across the storefront.",
+    "categoryListTitle": "Category management",
+    "categoryListDescription": "Review current categories and remove ones that should no longer be used.",
+    "createCategory": "Create category",
+    "categoryIdLabel": "Category ID",
+    "categoryProductsCountLabel": "products linked",
+    "futureToolsTitle": "Ready for more admin tools",
+    "futureToolsDescription": "This page is structured so you can add moderation, seller approvals, featured content controls, or reporting tools later without reworking the layout.",
+    "fields": {
+      "categoryNameTh": "Category name (TH)",
+      "categoryNameEn": "Category name (EN)"
+    }
+  },
   "profile": {
     "title": "Your library",
     "description": "Review account status, purchased products, and download the code you already own.",
@@ -152,8 +176,11 @@
   "status": {
     "loadingProfile": "Loading profile...",
     "loadingSellerWorkspace": "Loading seller workspace...",
+    "loadingAdminWorkspace": "Loading admin workspace...",
     "backendUnavailable": "Backend data is currently unavailable. The storefront shell is ready, and product data will populate as soon as the NestJS API is running.",
     "apiUnavailable": "API is currently unavailable",
+    "categoryCreatedSuccess": "Category created successfully.",
+    "categoryDeletedSuccess": "Category deleted successfully.",
     "productPublishedSuccess": "Product published successfully.",
     "productRemovedSuccess": "Product removed successfully."
   }
