@@ -24,16 +24,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(CART_STORAGE_KEY);
-      if (raw) {
-        setItems(JSON.parse(raw) as CartItem[]);
+    const timeoutId = window.setTimeout(() => {
+      try {
+        const raw = window.localStorage.getItem(CART_STORAGE_KEY);
+        if (raw) {
+          setItems(JSON.parse(raw) as CartItem[]);
+        }
+      } catch {
+        setItems([]);
+      } finally {
+        setHydrated(true);
       }
-    } catch {
-      setItems([]);
-    } finally {
-      setHydrated(true);
-    }
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {

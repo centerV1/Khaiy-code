@@ -6,12 +6,19 @@ import type {
   SellerProduct,
 } from "@/lib/types/store";
 
-export async function getProducts() {
+type GetProductsOptions = {
+  fresh?: boolean;
+};
+
+export async function getProducts(options: GetProductsOptions = {}) {
   return apiFetch<ProductSummary[]>("/products", {
-    next: {
-      revalidate: 60,
-      tags: ["products"],
-    },
+    cache: options.fresh ? "no-store" : undefined,
+    next: options.fresh
+      ? undefined
+      : {
+          revalidate: 60,
+          tags: ["products"],
+        },
   });
 }
 
@@ -35,7 +42,10 @@ export async function createProduct(payload: CreateProductPayload) {
   createForm.set("description_th", payload.description_th);
   createForm.set("description_en", payload.description_en);
   createForm.set("price", String(payload.price));
-  createForm.set("categoryIds", payload.categoryIds.join(","));
+  const categoryIds = serializeCategoryIds(payload.categoryIds);
+  if (categoryIds) {
+    createForm.set("categoryIds", categoryIds);
+  }
   createForm.set("file", payload.file);
 
   const created = await apiFetch<ProductSummary>("/products", {
@@ -69,4 +79,8 @@ export async function getPurchasedProductDownload(productId: number) {
   return apiFetch<DownloadProductResponse>(
     `/products/purchases/file/${productId}`,
   );
+}
+
+function serializeCategoryIds(categoryIds: number[]) {
+  return categoryIds.length > 0 ? categoryIds.join(",") : undefined;
 }

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getApiBaseUrl, getErrorMessage } from "@/lib/api/fetcher";
@@ -15,13 +16,10 @@ export function SignupForm({ locale }: { locale: string }) {
   const t = useTranslations();
   const router = useRouter();
   const { signup } = useAuth();
-  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const apiBaseUrl = getApiBaseUrl();
 
   function onSubmit(formData: FormData) {
-    setError(null);
-
     startTransition(async () => {
       try {
         await signup({
@@ -29,9 +27,10 @@ export function SignupForm({ locale }: { locale: string }) {
           password: String(formData.get("password") ?? ""),
         });
 
+        toast.success(t("status.signupSuccess"));
         router.push(withLocale(locale, "/profile"));
       } catch (submitError) {
-        setError(getErrorMessage(submitError));
+        toast.error(getErrorMessage(submitError));
       }
     });
   }
@@ -109,8 +108,6 @@ export function SignupForm({ locale }: { locale: string }) {
             type="password"
           />
         </label>
-
-        {error ? <p className="text-sm text-red-500">{error}</p> : null}
 
         <Button
           className="h-12 w-full rounded-full"

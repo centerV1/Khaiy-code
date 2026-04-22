@@ -32,9 +32,9 @@ export function Header({ locale }: HeaderProps) {
   const normalizedPathname = pathname.replace(/\/+$/, "") || "/";
   const homePath = withLocale(locale, "/");
   const isHomePath = normalizedPathname === homePath;
-  const showAnnouncement = isHomePath && !isScrolled;
-  const announcementHref = withLocale(locale, "/product");
-  const announcementText = t("announcement.sellInvite");
+  const showBanner = isHomePath && !isScrolled;
+  const bannerHref = withLocale(locale, "/product");
+  const bannerText = t("banner.sellInvite");
 
   const navigation = [
     { href: withLocale(locale, "/"), label: t("nav.home") },
@@ -223,14 +223,14 @@ export function Header({ locale }: HeaderProps) {
         <div
           className={cn(
             "overflow-hidden transition-all duration-300",
-            showAnnouncement
+            showBanner
               ? "max-h-9 border-t border-sky-900/20 opacity-100"
               : "max-h-0 border-t border-transparent opacity-0",
           )}
         >
           <Link
             className="block bg-[linear-gradient(90deg,#050b24,#15368f,#050b24)] text-white"
-            href={announcementHref}
+            href={bannerHref}
           >
             <div className="overflow-hidden px-4 sm:px-6 lg:px-8">
               <CurvedLoop
@@ -238,8 +238,8 @@ export function Header({ locale }: HeaderProps) {
                 curveAmount={0}
                 direction="right"
                 interactive
-                marqueeText={announcementText}
-                // marqueeText={announcementText}
+                marqueeText={bannerText}
+                // marqueeText={bannerText}
                 speed={1}
               />
             </div>

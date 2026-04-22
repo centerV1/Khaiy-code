@@ -19,7 +19,8 @@
     "viewDetails": "ดูรายละเอียด",
     "dashboard": "แดชบอร์ด",
     "emptyState": "ยังไม่มีข้อมูล",
-    "save": "บันทึก"
+    "save": "บันทึก",
+    "cancel": "ยกเลิก"
   },
   "home": {
     "eyebrow": "Marketplace สำหรับขาย source code คุณภาพสูง",
@@ -88,8 +89,15 @@
     "createCategory": "สร้างหมวดหมู่",
     "categoryIdLabel": "รหัสหมวดหมู่",
     "categoryProductsCountLabel": "สินค้าที่เชื่อมอยู่",
-    "futureToolsTitle": "พร้อมสำหรับเครื่องมือ admin เพิ่มเติม",
-    "futureToolsDescription": "โครงหน้านี้ถูกจัดไว้ให้เพิ่มเครื่องมืออย่างการดูแลผู้ขาย, อนุมัติรายการ, จัดการคอนเทนต์เด่น หรือระบบรายงานได้ต่อในภายหลังโดยไม่ต้องรื้อ layout ใหม่",
+    "productsTitle": "สินค้าทั้งหมด",
+    "productsDescription": "ตรวจสอบสินค้าทุกชิ้นใน marketplace และลบรายการที่ไม่ควรแสดงต่อได้จากตรงนี้",
+    "productsCountLabel": "สินค้า",
+    "deleteProduct": "ลบสินค้า",
+    "noCategoriesLabel": "ไม่ได้เลือกหมวดหมู่",
+    "confirmDeleteEyebrow": "ยืนยันการลบ",
+    "confirmDeleteTitle": "ต้องการลบสินค้านี้ไหม?",
+    "confirmDeleteDescription": "การลบนี้จะนำ “{product}” ออกจาก marketplace อย่างถาวร",
+    "confirmDeleteAction": "ยืนยันลบ",
     "fields": {
       "categoryNameTh": "ชื่อหมวดหมู่ (TH)",
       "categoryNameEn": "ชื่อหมวดหมู่ (EN)"
@@ -134,7 +142,7 @@
     "subtotal": "ยอดรวม",
     "remove": "ลบออก"
   },
-  "announcement": {
+  "banner": {
     "sellInvite": "ถ้ากำลังมองหาโค้ดที่ใช่ กดที่นี่เพื่อดูสินค้าของเรา",
     "subject": "ดูสินค้า - Khaiy Code"
   },
@@ -179,6 +187,13 @@
     "loadingAdminWorkspace": "กำลังโหลดพื้นที่จัดการระบบ...",
     "backendUnavailable": "ข้อมูลจาก backend ยังไม่พร้อมใช้งาน ตอนนี้โครงหน้าร้านพร้อมแล้ว และสินค้าจะขึ้นทันทีเมื่อ NestJS API ทำงาน",
     "apiUnavailable": "API ยังไม่พร้อมใช้งาน",
+    "loginSuccess": "เข้าสู่ระบบสำเร็จ",
+    "signupSuccess": "สร้างบัญชีสำเร็จ",
+    "logoutSuccess": "ออกจากระบบสำเร็จ",
+    "cartItemAdded": "เพิ่มลงตะกร้าแล้ว",
+    "cartItemRemoved": "ลบออกจากตะกร้าแล้ว",
+    "redirectingToLogin": "กรุณาเข้าสู่ระบบก่อนชำระเงิน",
+    "downloadReady": "กำลังเปิดไฟล์ดาวน์โหลด",
     "categoryCreatedSuccess": "สร้างหมวดหมู่สำเร็จ",
     "categoryDeletedSuccess": "ลบหมวดหมู่สำเร็จ",
     "productPublishedSuccess": "เผยแพร่สินค้าสำเร็จ",

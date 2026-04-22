@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ShoppingBag, Trash2, X } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getErrorMessage } from "@/lib/api/fetcher";
@@ -25,12 +26,9 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
   const pathname = usePathname();
   const { items, subtotal, removeItem } = useCart();
   const { isAuthenticated } = useAuth();
-  const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function handleCheckout() {
-    setCheckoutError(null);
-
     startTransition(async () => {
       try {
         const session = await createCheckoutSession(
@@ -39,9 +37,14 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
 
         window.location.href = session.checkoutUrl;
       } catch (error) {
-        setCheckoutError(getErrorMessage(error));
+        toast.error(getErrorMessage(error));
       }
     });
+  }
+
+  function handleRemoveItem(productId: number) {
+    removeItem(productId);
+    toast.info(t("status.cartItemRemoved"));
   }
 
   return (
@@ -125,7 +128,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                         </p>
                         <button
                           className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 transition hover:text-red-500"
-                          onClick={() => removeItem(item.productId)}
+                          onClick={() => handleRemoveItem(item.productId)}
                           type="button"
                         >
                           <Trash2 className="size-3.5" />
@@ -175,10 +178,6 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                   <ArrowRight className="size-4" />
                 </Button>
               )}
-
-              {checkoutError ? (
-                <p className="mt-3 text-sm text-red-500">{checkoutError}</p>
-              ) : null}
             </div>
           </>
         )}

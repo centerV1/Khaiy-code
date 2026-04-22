@@ -19,7 +19,8 @@
     "viewDetails": "View details",
     "dashboard": "Dashboard",
     "emptyState": "Nothing here yet",
-    "save": "Save"
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "home": {
     "eyebrow": "Marketplace for premium source code",
@@ -88,8 +89,15 @@
     "createCategory": "Create category",
     "categoryIdLabel": "Category ID",
     "categoryProductsCountLabel": "products linked",
-    "futureToolsTitle": "Ready for more admin tools",
-    "futureToolsDescription": "This page is structured so you can add moderation, seller approvals, featured content controls, or reporting tools later without reworking the layout.",
+    "productsTitle": "All products",
+    "productsDescription": "Review every product in the marketplace and remove listings that should no longer be available.",
+    "productsCountLabel": "products",
+    "deleteProduct": "Delete product",
+    "noCategoriesLabel": "No categories selected",
+    "confirmDeleteEyebrow": "Confirm delete",
+    "confirmDeleteTitle": "Delete this product?",
+    "confirmDeleteDescription": "This will permanently remove “{product}” from the marketplace.",
+    "confirmDeleteAction": "Yes, delete",
     "fields": {
       "categoryNameTh": "Category name (TH)",
       "categoryNameEn": "Category name (EN)"
@@ -134,8 +142,8 @@
     "subtotal": "Subtotal",
     "remove": "Remove"
   },
-  "announcement": {
-    "sellInvite": "Looking for the right code product? Click here to explore our catalog.",
+  "banner": {
+    "sellInvite": "Looking for the Code right? Click here to explore our Code.",
     "subject": "Browse products - Khaiy Code"
   },
   "footer": {
@@ -179,6 +187,13 @@
     "loadingAdminWorkspace": "Loading admin workspace...",
     "backendUnavailable": "Backend data is currently unavailable. The storefront shell is ready, and product data will populate as soon as the NestJS API is running.",
     "apiUnavailable": "API is currently unavailable",
+    "loginSuccess": "Logged in successfully.",
+    "signupSuccess": "Account created successfully.",
+    "logoutSuccess": "Logged out successfully.",
+    "cartItemAdded": "Added to cart.",
+    "cartItemRemoved": "Removed from cart.",
+    "redirectingToLogin": "Please login before checkout.",
+    "downloadReady": "Opening your download.",
     "categoryCreatedSuccess": "Category created successfully.",
     "categoryDeletedSuccess": "Category deleted successfully.",
     "productPublishedSuccess": "Product published successfully.",

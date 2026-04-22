@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Package, Trash2, UploadCloud } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -37,8 +38,6 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   const canAccessSell = hasRole(user, "SELLER", "ADMIN");
   const canDeleteProducts = hasRole(user, "ADMIN");
   const [products, setProducts] = useState<SellerProduct[]>([]);
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -47,7 +46,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       const data = await getMyProducts();
       setProducts(data);
     } catch (loadError) {
-      setError(getErrorMessage(loadError));
+      toast.error(getErrorMessage(loadError));
     }
   };
 
@@ -74,9 +73,6 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   });
 
   function handleSubmit(formData: FormData) {
-    setFeedback(null);
-    setError(null);
-
     startTransition(async () => {
       try {
         const payload = {
@@ -99,9 +95,9 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
         await loadListings();
 
         formRef.current?.reset();
-        setFeedback(t("status.productPublishedSuccess"));
+        toast.success(t("status.productPublishedSuccess"));
       } catch (submitError) {
-        setError(getErrorMessage(submitError));
+        toast.error(getErrorMessage(submitError));
       }
     });
   }
@@ -111,16 +107,13 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       return;
     }
 
-    setFeedback(null);
-    setError(null);
-
     startTransition(async () => {
       try {
         await deleteProduct(productId);
         await loadListings();
-        setFeedback(t("status.productRemovedSuccess"));
+        toast.success(t("status.productRemovedSuccess"));
       } catch (deleteError) {
-        setError(getErrorMessage(deleteError));
+        toast.error(getErrorMessage(deleteError));
       }
     });
   }
@@ -290,9 +283,6 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
               ))}
             </div>
           </div>
-
-          {feedback ? <p className="mt-5 text-sm text-emerald-600">{feedback}</p> : null}
-          {error ? <p className="mt-5 text-sm text-red-500">{error}</p> : null}
 
           <Button
             className="mt-8 h-12 rounded-full px-6"

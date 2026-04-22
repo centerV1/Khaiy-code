@@ -1,5 +1,6 @@
 import { AdminWorkspace } from "@/components/admin/admin-workspace";
 import { getCategories } from "@/lib/api/category";
+import { getProducts } from "@/lib/api/products";
 
 export default async function AdminPage({
   params,
@@ -7,7 +8,16 @@ export default async function AdminPage({
   params: Promise<{ local: string }>;
 }) {
   const { local } = await params;
-  const categories = await getCategories().catch(() => []);
+  const [categories, products] = await Promise.all([
+    getCategories().catch(() => []),
+    getProducts({ fresh: true }).catch(() => []),
+  ]);
 
-  return <AdminWorkspace initialCategories={categories} locale={local} />;
+  return (
+    <AdminWorkspace
+      initialCategories={categories}
+      initialProducts={products}
+      locale={local}
+    />
+  );
 }

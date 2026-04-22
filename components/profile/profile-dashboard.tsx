@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Download, Library, LogOut, ShieldCheck } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -29,7 +30,6 @@ export function ProfileDashboard({ locale }: { locale: string }) {
   const { user, status, isAuthenticated, logout } = useAuth();
   const canViewListings = hasRole(user, "ADMIN", "SELLER");
   const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -43,23 +43,34 @@ export function ProfileDashboard({ locale }: { locale: string }) {
         const response = await getMyPurchases();
         setPurchases(response.products);
       } catch (loadError) {
-        setError(getErrorMessage(loadError));
+        toast.error(getErrorMessage(loadError));
       }
     })();
   }, [isAuthenticated]);
 
   function handleDownload(productId: number) {
-    setError(null);
     setDownloadingId(productId);
 
     startTransition(async () => {
       try {
         const download = await getPurchasedProductDownload(productId);
+        toast.success(t("status.downloadReady"));
         window.open(download.url, "_blank", "noopener,noreferrer");
       } catch (downloadError) {
-        setError(getErrorMessage(downloadError));
+        toast.error(getErrorMessage(downloadError));
       } finally {
         setDownloadingId(null);
+      }
+    });
+  }
+
+  function handleLogout() {
+    startTransition(async () => {
+      try {
+        await logout();
+        toast.success(t("status.logoutSuccess"));
+      } catch (logoutError) {
+        toast.error(getErrorMessage(logoutError));
       }
     });
   }
@@ -136,7 +147,8 @@ export function ProfileDashboard({ locale }: { locale: string }) {
             </div>
             <Button
               className="h-12 rounded-full bg-slate-900 px-5 text-white hover:bg-slate-800"
-              onClick={() => void logout()}
+              disabled={isPending}
+              onClick={handleLogout}
             >
               <LogOut className="size-4" />
               {t("nav.logout")}
@@ -174,8 +186,6 @@ export function ProfileDashboard({ locale }: { locale: string }) {
             </p>
           </div>
         </div>
-
-        {error ? <p className="mt-5 text-sm text-red-500">{error}</p> : null}
 
         <div className="mt-6 space-y-4">
           {purchases.length > 0 ? (

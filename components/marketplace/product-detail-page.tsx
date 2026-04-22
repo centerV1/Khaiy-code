@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Download, ShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { ProductCard } from "@/components/marketplace/product-card";
 import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
@@ -36,8 +37,7 @@ export function ProductDetailPage({
   const translate = useTranslate();
   const router = useRouter();
   const { addItem, hasProduct, removeItem } = useCart();
-  const { buyNow, checkoutError, isPending, isReady } =
-    useDirectCheckout(locale);
+  const { buyNow, isPending, isReady } = useDirectCheckout(locale);
   const primaryImage = getPrimaryImage(product);
   const inCart = hasProduct(product.id);
   const productName = translate(product, "name");
@@ -146,28 +146,29 @@ export function ProductDetailPage({
                   ? "size-12 shrink-0 rounded-full border border-sky-600 bg-sky-600 text-white hover:bg-sky-500"
                   : "size-12 shrink-0 rounded-full border border-sky-100 bg-white text-sky-700 hover:bg-sky-50"
               }
-              onClick={() =>
-                inCart
-                  ? removeItem(product.id)
-                  : addItem(
-                      toCartSnapshot({
-                        product,
-                        name: productName,
-                        description: productDescription,
-                        categories: categoryNames,
-                      }),
-                    )
-              }
+              onClick={() => {
+                if (inCart) {
+                  removeItem(product.id);
+                  toast.info(t("status.cartItemRemoved"));
+                  return;
+                }
+
+                addItem(
+                  toCartSnapshot({
+                    product,
+                    name: productName,
+                    description: productDescription,
+                    categories: categoryNames,
+                  }),
+                );
+                toast.success(t("status.cartItemAdded"));
+              }}
               size="icon"
               variant="outline"
             >
               <ShoppingCart className="size-4" />
             </Button>
           </div>
-
-          {checkoutError ? (
-            <p className="mt-4 text-sm text-red-500">{checkoutError}</p>
-          ) : null}
         </div>
       </section>
 

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getApiBaseUrl, getErrorMessage } from "@/lib/api/fetcher";
@@ -17,17 +18,16 @@ export function LoginForm({ locale }: { locale: string }) {
   const searchParams = useSearchParams();
   const { login } = useAuth();
   const oauthError = searchParams.get("error");
-  const [error, setError] = useState<string | null>(oauthError);
   const [isPending, startTransition] = useTransition();
   const apiBaseUrl = getApiBaseUrl();
 
   useEffect(() => {
-    setError(oauthError);
+    if (oauthError) {
+      toast.error(oauthError);
+    }
   }, [oauthError]);
 
   function onSubmit(formData: FormData) {
-    setError(null);
-
     startTransition(async () => {
       try {
         await login({
@@ -35,11 +35,12 @@ export function LoginForm({ locale }: { locale: string }) {
           password: String(formData.get("password") ?? ""),
         });
 
+        toast.success(t("status.loginSuccess"));
         router.push(
           searchParams.get("redirect") || withLocale(locale, "/profile"),
         );
       } catch (submitError) {
-        setError(getErrorMessage(submitError));
+        toast.error(getErrorMessage(submitError));
       }
     });
   }
@@ -117,8 +118,6 @@ export function LoginForm({ locale }: { locale: string }) {
             type="password"
           />
         </label>
-
-        {error ? <p className="text-sm text-red-500">{error}</p> : null}
 
         <Button
           className="h-12 w-full rounded-full"
