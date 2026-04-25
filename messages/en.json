@@ -19,12 +19,13 @@
     "viewDetails": "View details",
     "dashboard": "Dashboard",
     "emptyState": "Nothing here yet",
-    "save": "Save"
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "home": {
-    "eyebrow": "Marketplace for premium source code",
-    "title": "Ship polished code products with a storefront that feels ready for launch.",
-    "description": "Discover premium templates, starter kits, dashboards, and production-ready code packs built for teams that want to move fast.",
+    "eyebrow": "Marketplace for source code",
+    "title": "Professional source code templates and digital products for every build.",
+    "description": "Explore ready-to-customize templates, starter kits, dashboards, and code packs created by skilled developers.",
     "primaryCta": "Explore products",
     "secondaryCta": "Start selling",
     "featuredTitle": "Featured code releases",
@@ -38,7 +39,7 @@
   },
   "products": {
     "title": "Product catalog",
-    "description": "Browse premium code assets, filter by category, and add what you need before signing in.",
+    "description": "Browse code assets, filter by category, and add what you need before signing in.",
     "searchPlaceholder": "Search templates, dashboards, starter kits...",
     "filterAll": "All categories",
     "showingLabel": "products available",
@@ -65,10 +66,50 @@
       "nameEn": "Name (EN)",
       "descriptionTh": "Description (TH)",
       "descriptionEn": "Description (EN)",
+      "detailTh": "Rich text details (TH)",
+      "detailEn": "Rich text details (EN)",
       "price": "Price",
       "file": "ZIP source file",
       "images": "Preview images",
       "categories": "Categories"
+    }
+  },
+  "admin": {
+    "eyebrow": "Admin",
+    "title": "Admin workspace",
+    "description": "Manage foundational marketplace data from one place. Categories are available now, and this area is ready for more admin tools later.",
+    "guestTitle": "Login before opening admin tools",
+    "guestDescription": "This page is reserved for administrators so protected management actions stay behind your account session.",
+    "guestCta": "Go to login",
+    "restrictedTitle": "Admin access is required",
+    "restrictedDescription": "Only administrators can open this page and use management tools.",
+    "restrictedCta": "Go to profile",
+    "categoryFormTitle": "Create category",
+    "categoryFormDescription": "Add clean Thai and English labels so products stay organized across the storefront.",
+    "categoryListTitle": "Category management",
+    "categoryListDescription": "Review current categories and remove ones that should no longer be used.",
+    "createCategory": "Create category",
+    "categoryIdLabel": "Category ID",
+    "categoryProductsCountLabel": "products linked",
+    "productsTitle": "All products",
+    "productsDescription": "Review every product in the marketplace and remove listings that should no longer be available.",
+    "productsCountLabel": "products",
+    "deleteProduct": "Delete product",
+    "noCategoriesLabel": "No categories selected",
+    "backToAdmin": "Back to admin",
+    "productEditTitle": "Edit product",
+    "productEditDescription": "Update product copy, price, categories, and replace the source file when needed.",
+    "productEditFormTitle": "Product details",
+    "productEditFormDescription": "Changes are saved through the backend product PATCH endpoint.",
+    "replaceFile": "Replace ZIP source file",
+    "updateProduct": "Save product",
+    "confirmDeleteEyebrow": "Confirm delete",
+    "confirmDeleteTitle": "Delete this product?",
+    "confirmDeleteDescription": "This will permanently remove “{product}” from the marketplace.",
+    "confirmDeleteAction": "Yes, delete",
+    "fields": {
+      "categoryNameTh": "Category name (TH)",
+      "categoryNameEn": "Category name (EN)"
     }
   },
   "profile": {
@@ -110,14 +151,15 @@
     "subtotal": "Subtotal",
     "remove": "Remove"
   },
-  "announcement": {
-    "sellInvite": "Looking for the right code product? Click here to explore our catalog.",
+  "banner": {
+    "sellInvite": "Looking for the Code right? Click here to explore our Code.",
     "subject": "Browse products - Khaiy Code"
   },
   "footer": {
     "emailPrimary": "Email Khaiy Code",
     "copyright": "© 2026 Khaiy Code",
     "links": {
+      "home": "Home",
       "products": "Products",
       "sellers": "Sellers",
       "partnerships": "Partnerships",
@@ -134,6 +176,7 @@
     "price": "Price",
     "updated": "Updated",
     "delivery": "Delivery",
+    "productDetails": "More details",
     "zipSourceFile": "ZIP source file",
     "moreToExplore": "More to explore",
     "relatedProducts": "Related products",
@@ -151,9 +194,20 @@
   "status": {
     "loadingProfile": "Loading profile...",
     "loadingSellerWorkspace": "Loading seller workspace...",
+    "loadingAdminWorkspace": "Loading admin workspace...",
     "backendUnavailable": "Backend data is currently unavailable. The storefront shell is ready, and product data will populate as soon as the NestJS API is running.",
     "apiUnavailable": "API is currently unavailable",
+    "loginSuccess": "Logged in successfully.",
+    "signupSuccess": "Account created successfully.",
+    "logoutSuccess": "Logged out successfully.",
+    "cartItemAdded": "Added to cart.",
+    "cartItemRemoved": "Removed from cart.",
+    "redirectingToLogin": "Please login before checkout.",
+    "downloadReady": "Opening your download.",
+    "categoryCreatedSuccess": "Category created successfully.",
+    "categoryDeletedSuccess": "Category deleted successfully.",
     "productPublishedSuccess": "Product published successfully.",
+    "productUpdatedSuccess": "Product updated successfully.",
     "productRemovedSuccess": "Product removed successfully."
   }
 }

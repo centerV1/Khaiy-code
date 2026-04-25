@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Download, ShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { ProductCard } from "@/components/marketplace/product-card";
+import { RichTextContent } from "@/components/ui/rich-text-editor";
+import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import { Button } from "@/components/ui/button";
 import {
   formatDate,
@@ -32,16 +36,21 @@ export function ProductDetailPage({
 }: ProductDetailPageProps) {
   const t = useTranslations();
   const translate = useTranslate();
+  const router = useRouter();
   const { addItem, hasProduct, removeItem } = useCart();
-  const { buyNow, checkoutError, isPending, isReady } =
-    useDirectCheckout(locale);
+  const { buyNow, isPending, isReady } = useDirectCheckout(locale);
   const primaryImage = getPrimaryImage(product);
   const inCart = hasProduct(product.id);
   const productName = translate(product, "name");
   const productDescription = translate(product, "description");
+  const productDetail = translate(product, "detail");
   const categoryNames = product.category.map((category) =>
     translate(category, "name"),
   );
+
+  useRealtimeEvents(["productUpdate", "categoryUpdate"], () => {
+    router.refresh();
+  });
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-20 pt-12 sm:px-6 lg:px-8">
@@ -139,30 +148,40 @@ export function ProductDetailPage({
                   ? "size-12 shrink-0 rounded-full border border-sky-600 bg-sky-600 text-white hover:bg-sky-500"
                   : "size-12 shrink-0 rounded-full border border-sky-100 bg-white text-sky-700 hover:bg-sky-50"
               }
-              onClick={() =>
-                inCart
-                  ? removeItem(product.id)
-                  : addItem(
-                      toCartSnapshot({
-                        product,
-                        name: productName,
-                        description: productDescription,
-                        categories: categoryNames,
-                      }),
-                    )
-              }
+              onClick={() => {
+                if (inCart) {
+                  removeItem(product.id);
+                  toast.info(t("status.cartItemRemoved"));
+                  return;
+                }
+
+                addItem(
+                  toCartSnapshot({
+                    product,
+                    name: productName,
+                    description: productDescription,
+                    categories: categoryNames,
+                  }),
+                );
+                toast.success(t("status.cartItemAdded"));
+              }}
               size="icon"
               variant="outline"
             >
               <ShoppingCart className="size-4" />
             </Button>
           </div>
-
-          {checkoutError ? (
-            <p className="mt-4 text-sm text-red-500">{checkoutError}</p>
-          ) : null}
         </div>
       </section>
+
+      {productDetail ? (
+        <section className="mt-10 rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
+          <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
+            {t("labels.productDetails")}
+          </p>
+          <RichTextContent className="mt-6" html={productDetail} />
+        </section>
+      ) : null}
 
       {relatedProducts.length > 0 ? (
         <section className="mt-16">

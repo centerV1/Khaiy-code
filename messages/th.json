@@ -19,12 +19,13 @@
     "viewDetails": "ดูรายละเอียด",
     "dashboard": "แดชบอร์ด",
     "emptyState": "ยังไม่มีข้อมูล",
-    "save": "บันทึก"
+    "save": "บันทึก",
+    "cancel": "ยกเลิก"
   },
   "home": {
-    "eyebrow": "Marketplace สำหรับขาย source code คุณภาพสูง",
-    "title": "สร้างหน้าร้านขายโค้ดที่พร้อมใช้งานจริงตั้งแต่วันแรก",
-    "description": "รวมเทมเพลต, starter kit, dashboard และชุดโค้ดที่พร้อมนำไปใช้งานหรือพัฒนาต่อได้ทันที",
+    "eyebrow": "Marketplace สำหรับขาย source code",
+    "title": "Source code templates และสินค้าดิจิทัลระดับมืออาชีพสำหรับทุกโปรเจกต์",
+    "description": "เลือกดูเทมเพลต, starter kit, dashboard และชุดโค้ดที่ปรับแต่งต่อได้ง่ายจากนักพัฒนาที่มีคุณภาพ",
     "primaryCta": "ดูสินค้าทั้งหมด",
     "secondaryCta": "เริ่มขายโค้ด",
     "featuredTitle": "สินค้าที่น่าสนใจ",
@@ -65,10 +66,50 @@
       "nameEn": "ชื่อสินค้า (EN)",
       "descriptionTh": "รายละเอียด (TH)",
       "descriptionEn": "รายละเอียด (EN)",
+      "detailTh": "รายละเอียดเพิ่มเติมแบบ Rich Text (TH)",
+      "detailEn": "รายละเอียดเพิ่มเติมแบบ Rich Text (EN)",
       "price": "ราคา",
       "file": "ไฟล์ ZIP",
       "images": "รูป preview",
       "categories": "หมวดหมู่"
+    }
+  },
+  "admin": {
+    "eyebrow": "Admin",
+    "title": "พื้นที่จัดการระบบ",
+    "description": "จัดการข้อมูลพื้นฐานของ marketplace ได้จากจุดเดียว ตอนนี้เริ่มจากหมวดหมู่ก่อน และโครงหน้านี้พร้อมต่อยอดเครื่องมือ admin อื่นในอนาคต",
+    "guestTitle": "เข้าสู่ระบบก่อนเข้าใช้งานเครื่องมือ admin",
+    "guestDescription": "หน้านี้สงวนไว้สำหรับผู้ดูแลระบบ เพื่อให้การจัดการข้อมูลสำคัญยังอยู่ภายใต้บัญชีที่ได้รับสิทธิ์เท่านั้น",
+    "guestCta": "ไปหน้าเข้าสู่ระบบ",
+    "restrictedTitle": "ต้องมีสิทธิ์ผู้ดูแลระบบ",
+    "restrictedDescription": "เฉพาะผู้ดูแลระบบเท่านั้นที่สามารถเข้าใช้งานหน้านี้และใช้เครื่องมือจัดการได้",
+    "restrictedCta": "ไปที่โปรไฟล์",
+    "categoryFormTitle": "สร้างหมวดหมู่",
+    "categoryFormDescription": "เพิ่มชื่อหมวดหมู่ทั้งภาษาไทยและอังกฤษให้เรียบร้อย เพื่อให้สินค้าบนหน้าร้านจัดระเบียบได้ชัดเจน",
+    "categoryListTitle": "จัดการหมวดหมู่",
+    "categoryListDescription": "ตรวจสอบหมวดหมู่ที่มีอยู่ และลบหมวดที่ไม่ต้องการใช้งานแล้ว",
+    "createCategory": "สร้างหมวดหมู่",
+    "categoryIdLabel": "รหัสหมวดหมู่",
+    "categoryProductsCountLabel": "สินค้าที่เชื่อมอยู่",
+    "productsTitle": "สินค้าทั้งหมด",
+    "productsDescription": "ตรวจสอบสินค้าทุกชิ้นใน marketplace และลบรายการที่ไม่ควรแสดงต่อได้จากตรงนี้",
+    "productsCountLabel": "สินค้า",
+    "deleteProduct": "ลบสินค้า",
+    "noCategoriesLabel": "ไม่ได้เลือกหมวดหมู่",
+    "backToAdmin": "กลับไปหน้า admin",
+    "productEditTitle": "แก้ไขสินค้า",
+    "productEditDescription": "แก้ไขชื่อ รายละเอียด ราคา หมวดหมู่ และเปลี่ยนไฟล์ source ได้เมื่อต้องการ",
+    "productEditFormTitle": "ข้อมูลสินค้า",
+    "productEditFormDescription": "การแก้ไขจะบันทึกผ่าน backend product PATCH endpoint",
+    "replaceFile": "เปลี่ยนไฟล์ ZIP source",
+    "updateProduct": "บันทึกสินค้า",
+    "confirmDeleteEyebrow": "ยืนยันการลบ",
+    "confirmDeleteTitle": "ต้องการลบสินค้านี้ไหม?",
+    "confirmDeleteDescription": "การลบนี้จะนำ “{product}” ออกจาก marketplace อย่างถาวร",
+    "confirmDeleteAction": "ยืนยันลบ",
+    "fields": {
+      "categoryNameTh": "ชื่อหมวดหมู่ (TH)",
+      "categoryNameEn": "ชื่อหมวดหมู่ (EN)"
     }
   },
   "profile": {
@@ -110,7 +151,7 @@
     "subtotal": "ยอดรวม",
     "remove": "ลบออก"
   },
-  "announcement": {
+  "banner": {
     "sellInvite": "ถ้ากำลังมองหาโค้ดที่ใช่ กดที่นี่เพื่อดูสินค้าของเรา",
     "subject": "ดูสินค้า - Khaiy Code"
   },
@@ -118,13 +159,14 @@
     "emailPrimary": "อีเมล Khaiy Code",
     "copyright": "© 2026 Khaiy Code",
     "links": {
+      "home": "หน้าหลัก",
       "products": "สินค้า",
       "sellers": "ผู้ขาย",
       "partnerships": "พาร์ตเนอร์",
       "profile": "โปรไฟล์",
       "library": "คลังสินค้า",
       "blog": "บล็อก",
-      "about": "เกี่ยวกับ Khaiy Code",
+      "about": "เกี่ยวกับ",
       "license": "ลิขสิทธิ์",
       "privacy": "ความเป็นส่วนตัว"
     }
@@ -134,6 +176,7 @@
     "price": "ราคา",
     "updated": "อัปเดตล่าสุด",
     "delivery": "การส่งมอบ",
+    "productDetails": "รายละเอียดเพิ่มเติม",
     "zipSourceFile": "ไฟล์ ZIP",
     "moreToExplore": "สำรวจเพิ่มเติม",
     "relatedProducts": "สินค้าที่เกี่ยวข้อง",
@@ -151,9 +194,20 @@
   "status": {
     "loadingProfile": "กำลังโหลดโปรไฟล์...",
     "loadingSellerWorkspace": "กำลังโหลดพื้นที่ขาย...",
+    "loadingAdminWorkspace": "กำลังโหลดพื้นที่จัดการระบบ...",
     "backendUnavailable": "ข้อมูลจาก backend ยังไม่พร้อมใช้งาน ตอนนี้โครงหน้าร้านพร้อมแล้ว และสินค้าจะขึ้นทันทีเมื่อ NestJS API ทำงาน",
     "apiUnavailable": "API ยังไม่พร้อมใช้งาน",
+    "loginSuccess": "เข้าสู่ระบบสำเร็จ",
+    "signupSuccess": "สร้างบัญชีสำเร็จ",
+    "logoutSuccess": "ออกจากระบบสำเร็จ",
+    "cartItemAdded": "เพิ่มลงตะกร้าแล้ว",
+    "cartItemRemoved": "ลบออกจากตะกร้าแล้ว",
+    "redirectingToLogin": "กรุณาเข้าสู่ระบบก่อนชำระเงิน",
+    "downloadReady": "กำลังเปิดไฟล์ดาวน์โหลด",
+    "categoryCreatedSuccess": "สร้างหมวดหมู่สำเร็จ",
+    "categoryDeletedSuccess": "ลบหมวดหมู่สำเร็จ",
     "productPublishedSuccess": "เผยแพร่สินค้าสำเร็จ",
+    "productUpdatedSuccess": "แก้ไขสินค้าสำเร็จ",
     "productRemovedSuccess": "ลบสินค้าสำเร็จ"
   }
 }

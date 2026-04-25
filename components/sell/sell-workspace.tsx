@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Package, Trash2, UploadCloud } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import {
   createProduct,
   deleteProduct,
@@ -13,6 +16,7 @@ import {
 } from "@/lib/api/products";
 import { getErrorMessage } from "@/lib/api/fetcher";
 import { hasRole } from "@/lib/auth/roles";
+import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import {
   formatPrice,
   withLocale,
@@ -30,12 +34,11 @@ type SellWorkspaceProps = {
 export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
   const t = useTranslations();
   const translate = useTranslate();
+  const router = useRouter();
   const { user, status, isAuthenticated } = useAuth();
   const canAccessSell = hasRole(user, "SELLER", "ADMIN");
   const canDeleteProducts = hasRole(user, "ADMIN");
   const [products, setProducts] = useState<SellerProduct[]>([]);
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -44,7 +47,7 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       const data = await getMyProducts();
       setProducts(data);
     } catch (loadError) {
-      setError(getErrorMessage(loadError));
+      toast.error(getErrorMessage(loadError));
     }
   };
 
@@ -62,10 +65,15 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
     };
   }, [canAccessSell, isAuthenticated]);
 
-  function handleSubmit(formData: FormData) {
-    setFeedback(null);
-    setError(null);
+  useRealtimeEvents(["productUpdate", "categoryUpdate"], () => {
+    if (isAuthenticated && canAccessSell) {
+      void loadListings();
+    }
 
+    router.refresh();
+  });
+
+  function handleSubmit(formData: FormData) {
     startTransition(async () => {
       try {
         const payload = {
@@ -73,6 +81,8 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
           name_en: String(formData.get("name_en") ?? ""),
           description_th: String(formData.get("description_th") ?? ""),
           description_en: String(formData.get("description_en") ?? ""),
+          detail_th: String(formData.get("detail_th") ?? ""),
+          detail_en: String(formData.get("detail_en") ?? ""),
           price: Number(formData.get("price") ?? 0),
           categoryIds: formData
             .getAll("categoryIds")
@@ -88,9 +98,9 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
         await loadListings();
 
         formRef.current?.reset();
-        setFeedback(t("status.productPublishedSuccess"));
+        toast.success(t("status.productPublishedSuccess"));
       } catch (submitError) {
-        setError(getErrorMessage(submitError));
+        toast.error(getErrorMessage(submitError));
       }
     });
   }
@@ -100,16 +110,13 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
       return;
     }
 
-    setFeedback(null);
-    setError(null);
-
     startTransition(async () => {
       try {
         await deleteProduct(productId);
         await loadListings();
-        setFeedback(t("status.productRemovedSuccess"));
+        toast.success(t("status.productRemovedSuccess"));
       } catch (deleteError) {
-        setError(getErrorMessage(deleteError));
+        toast.error(getErrorMessage(deleteError));
       }
     });
   }
@@ -236,6 +243,18 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
               label={t("sell.fields.descriptionEn")}
               name="description_en"
             />
+            <div className="md:col-span-2">
+              <RichTextEditor
+                label={t("sell.fields.detailTh")}
+                name="detail_th"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <RichTextEditor
+                label={t("sell.fields.detailEn")}
+                name="detail_en"
+              />
+            </div>
             <Field
               label={t("sell.fields.price")}
               min="1"
@@ -279,9 +298,6 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
               ))}
             </div>
           </div>
-
-          {feedback ? <p className="mt-5 text-sm text-emerald-600">{feedback}</p> : null}
-          {error ? <p className="mt-5 text-sm text-red-500">{error}</p> : null}
 
           <Button
             className="mt-8 h-12 rounded-full px-6"

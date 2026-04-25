@@ -18,6 +18,7 @@ export function Footer({ locale }: FooterProps) {
   const canAccessSell = hasRole(user, "SELLER", "ADMIN");
 
   const links = [
+    { href: withLocale(locale, "/"), label: t("footer.links.home") },
     { href: withLocale(locale, "/product"), label: t("footer.links.products") },
     { href: withLocale(locale, "/profile"), label: t("footer.links.profile") },
     { href: withLocale(locale, "/"), label: t("footer.links.about") },
