@@ -23,9 +23,9 @@
     "cancel": "Cancel"
   },
   "home": {
-    "eyebrow": "Marketplace for premium source code",
-    "title": "Ship polished code products with a storefront that feels ready for launch.",
-    "description": "Discover premium templates, starter kits, dashboards, and production-ready code packs built for teams that want to move fast.",
+    "eyebrow": "Marketplace for source code",
+    "title": "Professional source code templates and digital products for every build.",
+    "description": "Explore ready-to-customize templates, starter kits, dashboards, and code packs created by skilled developers.",
     "primaryCta": "Explore products",
     "secondaryCta": "Start selling",
     "featuredTitle": "Featured code releases",
@@ -39,7 +39,7 @@
   },
   "products": {
     "title": "Product catalog",
-    "description": "Browse premium code assets, filter by category, and add what you need before signing in.",
+    "description": "Browse code assets, filter by category, and add what you need before signing in.",
     "searchPlaceholder": "Search templates, dashboards, starter kits...",
     "filterAll": "All categories",
     "showingLabel": "products available",
@@ -66,6 +66,8 @@
       "nameEn": "Name (EN)",
       "descriptionTh": "Description (TH)",
       "descriptionEn": "Description (EN)",
+      "detailTh": "Rich text details (TH)",
+      "detailEn": "Rich text details (EN)",
       "price": "Price",
       "file": "ZIP source file",
       "images": "Preview images",
@@ -94,6 +96,13 @@
     "productsCountLabel": "products",
     "deleteProduct": "Delete product",
     "noCategoriesLabel": "No categories selected",
+    "backToAdmin": "Back to admin",
+    "productEditTitle": "Edit product",
+    "productEditDescription": "Update product copy, price, categories, and replace the source file when needed.",
+    "productEditFormTitle": "Product details",
+    "productEditFormDescription": "Changes are saved through the backend product PATCH endpoint.",
+    "replaceFile": "Replace ZIP source file",
+    "updateProduct": "Save product",
     "confirmDeleteEyebrow": "Confirm delete",
     "confirmDeleteTitle": "Delete this product?",
     "confirmDeleteDescription": "This will permanently remove “{product}” from the marketplace.",
@@ -167,6 +176,7 @@
     "price": "Price",
     "updated": "Updated",
     "delivery": "Delivery",
+    "productDetails": "More details",
     "zipSourceFile": "ZIP source file",
     "moreToExplore": "More to explore",
     "relatedProducts": "Related products",
@@ -197,6 +207,7 @@
     "categoryCreatedSuccess": "Category created successfully.",
     "categoryDeletedSuccess": "Category deleted successfully.",
     "productPublishedSuccess": "Product published successfully.",
+    "productUpdatedSuccess": "Product updated successfully.",
     "productRemovedSuccess": "Product removed successfully."
   }
 }

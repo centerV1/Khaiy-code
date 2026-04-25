@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { ProductCard } from "@/components/marketplace/product-card";
+import { RichTextContent } from "@/components/ui/rich-text-editor";
 import { useRealtimeEvents } from "@/lib/hooks/use-realtime-events";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +43,7 @@ export function ProductDetailPage({
   const inCart = hasProduct(product.id);
   const productName = translate(product, "name");
   const productDescription = translate(product, "description");
+  const productDetail = translate(product, "detail");
   const categoryNames = product.category.map((category) =>
     translate(category, "name"),
   );
@@ -171,6 +173,15 @@ export function ProductDetailPage({
           </div>
         </div>
       </section>
+
+      {productDetail ? (
+        <section className="mt-10 rounded-[2.5rem] border border-white/60 bg-white/88 p-8 shadow-xl shadow-sky-100/70">
+          <p className="text-sm font-medium uppercase tracking-[0.3em] text-sky-600">
+            {t("labels.productDetails")}
+          </p>
+          <RichTextContent className="mt-6" html={productDetail} />
+        </section>
+      ) : null}
 
       {relatedProducts.length > 0 ? (
         <section className="mt-16">

@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import {
   createProduct,
   deleteProduct,
@@ -80,6 +81,8 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
           name_en: String(formData.get("name_en") ?? ""),
           description_th: String(formData.get("description_th") ?? ""),
           description_en: String(formData.get("description_en") ?? ""),
+          detail_th: String(formData.get("detail_th") ?? ""),
+          detail_en: String(formData.get("detail_en") ?? ""),
           price: Number(formData.get("price") ?? 0),
           categoryIds: formData
             .getAll("categoryIds")
@@ -240,6 +243,18 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
               label={t("sell.fields.descriptionEn")}
               name="description_en"
             />
+            <div className="md:col-span-2">
+              <RichTextEditor
+                label={t("sell.fields.detailTh")}
+                name="detail_th"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <RichTextEditor
+                label={t("sell.fields.detailEn")}
+                name="detail_en"
+              />
+            </div>
             <Field
               label={t("sell.fields.price")}
               min="1"

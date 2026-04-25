@@ -4,6 +4,7 @@ import type {
   DownloadProductResponse,
   ProductSummary,
   SellerProduct,
+  UpdateProductPayload,
 } from "@/lib/types/store";
 
 type GetProductsOptions = {
@@ -22,12 +23,18 @@ export async function getProducts(options: GetProductsOptions = {}) {
   });
 }
 
-export async function getProduct(productId: number) {
+export async function getProduct(
+  productId: number,
+  options: GetProductsOptions = {},
+) {
   return apiFetch<ProductSummary>(`/products/${productId}`, {
-    next: {
-      revalidate: 60,
-      tags: [`product-${productId}`],
-    },
+    cache: options.fresh ? "no-store" : undefined,
+    next: options.fresh
+      ? undefined
+      : {
+          revalidate: 60,
+          tags: [`product-${productId}`],
+        },
   });
 }
 
@@ -41,6 +48,8 @@ export async function createProduct(payload: CreateProductPayload) {
   createForm.set("name_en", payload.name_en);
   createForm.set("description_th", payload.description_th);
   createForm.set("description_en", payload.description_en);
+  createForm.set("detail_th", payload.detail_th);
+  createForm.set("detail_en", payload.detail_en);
   createForm.set("price", String(payload.price));
   const categoryIds = serializeCategoryIds(payload.categoryIds);
   if (categoryIds) {
@@ -64,6 +73,35 @@ export async function createProduct(payload: CreateProductPayload) {
   }
 
   return getProduct(created.id);
+}
+
+export async function updateProduct(
+  productId: number,
+  payload: UpdateProductPayload,
+) {
+  const updateForm = new FormData();
+  updateForm.set("name_th", payload.name_th);
+  updateForm.set("name_en", payload.name_en);
+  updateForm.set("description_th", payload.description_th);
+  updateForm.set("description_en", payload.description_en);
+  updateForm.set("detail_th", payload.detail_th);
+  updateForm.set("detail_en", payload.detail_en);
+  updateForm.set("price", String(payload.price));
+  updateForm.set(
+    "categoryIds",
+    serializeCategoryIds(payload.categoryIds) ?? "[]",
+  );
+
+  if (payload.file && payload.file.size > 0) {
+    updateForm.set("file", payload.file);
+  }
+
+  await apiFetch<ProductSummary>(`/products/${productId}`, {
+    method: "PATCH",
+    body: updateForm,
+  });
+
+  return getProduct(productId, { fresh: true });
 }
 
 export async function deleteProduct(productId: number) {

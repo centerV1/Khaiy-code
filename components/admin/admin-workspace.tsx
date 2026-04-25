@@ -340,7 +340,10 @@ export function AdminWorkspace({
                   key={product.id}
                 >
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="min-w-0">
+                    <Link
+                      className="min-w-0 flex-1 rounded-[1.5rem] outline-none transition focus-visible:ring-3 focus-visible:ring-sky-200"
+                      href={withLocale(locale, `/admin/${product.id}`)}
+                    >
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="text-lg font-semibold text-slate-950">
                           {productName}
@@ -371,7 +374,7 @@ export function AdminWorkspace({
                       <p className="mt-3 text-base font-semibold text-slate-950">
                         {formatPrice(product.price, locale)}
                       </p>
-                    </div>
+                    </Link>
 
                     <button
                       className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-red-100 px-4 text-sm font-medium text-red-600 transition hover:border-red-200 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 lg:shrink-0"

@@ -37,6 +37,8 @@ export interface ProductSummary {
   name_en: string;
   description_th: string;
   description_en: string;
+  detail_th: string | null;
+  detail_en: string | null;
   price: number;
   createdAt: string;
   updatedAt: string;
@@ -97,10 +99,24 @@ export interface CreateProductPayload {
   name_en: string;
   description_th: string;
   description_en: string;
+  detail_th: string;
+  detail_en: string;
   price: number;
   categoryIds: number[];
   file: File;
   images: File[];
+}
+
+export interface UpdateProductPayload {
+  name_th: string;
+  name_en: string;
+  description_th: string;
+  description_en: string;
+  detail_th: string;
+  detail_en: string;
+  price: number;
+  categoryIds: number[];
+  file?: File;
 }
 
 export interface LoginPayload {
@@ -126,4 +142,4 @@ export interface MarketplaceBootstrap {
   products: ProductSummary[];
   categories: Category[];
   hasBackendError: boolean;
-} 
+}

@@ -111,7 +111,7 @@ export function CartDrawer({ locale, open, onClose }: CartDrawerProps) {
                   key={item.productId}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.2),_rgba(255,255,255,0.9)_60%)] text-[10px] font-semibold uppercase tracking-[0.3em] text-sky-700">
+                    <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.2),rgba(255,255,255,0.9)_60%)] text-[10px] font-semibold uppercase tracking-[0.3em] text-sky-700">
                       {t("labels.code")}
                     </div>
 
