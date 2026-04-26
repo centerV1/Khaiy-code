@@ -1,3 +1,5 @@
+"use server";
+
 import { notFound } from "next/navigation";
 
 import { AdminProductEditor } from "@/components/admin/admin-product-editor";

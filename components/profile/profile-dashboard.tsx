@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button, buttonVariants } from "@/components/ui/button";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import {
   getMyPurchases,
 } from "@/lib/api/users";
@@ -129,18 +130,11 @@ export function ProfileDashboard({ locale }: { locale: string }) {
           </div>
           <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
             <div className="flex items-center gap-3 rounded-[2rem] border border-sky-100 bg-sky-50/80 px-5 py-4 text-sm text-slate-700">
-              <span className="inline-flex size-11 items-center justify-center overflow-hidden rounded-full border border-white/80 bg-white text-sm font-semibold text-slate-800 shadow-sm shadow-sky-100/70">
-                {user.avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    alt={user.email}
-                    className="size-full object-cover"
-                    src={user.avatarUrl}
-                  />
-                ) : (
-                  user.email.slice(0, 2).toUpperCase()
-                )}
-              </span>
+              <UserAvatar
+                avatarUrl={user.avatarUrl}
+                className="size-11 border border-white/80 bg-white text-slate-800 shadow-sm shadow-sky-100/70"
+                email={user.email}
+              />
               <span>
                 {t("labels.signedInAs")} <span className="font-semibold">{user.email}</span>
               </span>

@@ -30,10 +30,3 @@ export function hasRole(
 ): boolean {
   return hasSomeRole(subject, allowedRoles);
 }
-
-export function lacksRole(
-  subject: RoleSubject,
-  ...blockedRoles: UserRole[]
-): boolean {
-  return !hasSomeRole(subject, blockedRoles);
-}

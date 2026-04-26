@@ -10,8 +10,9 @@ import { CartDrawer } from "@/components/cart/cart-drawer";
 import { LanguageSwitcher } from "@/components/Header/language-switcher";
 import { buttonVariants } from "@/components/ui/button";
 import { CurvedLoop } from "@/components/ui/curved-loop";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { hasRole } from "@/lib/auth/roles";
-import { getInitials, withLocale } from "@/lib/site";
+import { withLocale } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 import { useCart } from "@/providers/cart-provider";
@@ -149,16 +150,11 @@ export function Header({ locale }: HeaderProps) {
                   className="inline-flex size-11 items-center justify-center rounded-full border border-sky-100 bg-white text-sm font-semibold text-slate-800 transition hover:border-sky-200"
                   href={withLocale(locale, "/profile")}
                 >
-                  {user.avatarUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      alt={user.email}
-                      className="size-full rounded-full object-cover"
-                      src={user.avatarUrl}
-                    />
-                  ) : (
-                    getInitials(user.email)
-                  )}
+                  <UserAvatar
+                    avatarUrl={user.avatarUrl}
+                    className="size-full"
+                    email={user.email}
+                  />
                 </Link>
               </>
             ) : (

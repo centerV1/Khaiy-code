@@ -1,3 +1,5 @@
+"use server";
+
 import { notFound } from "next/navigation";
 
 import { ProductDetailPage } from "@/components/marketplace/product-detail-page";

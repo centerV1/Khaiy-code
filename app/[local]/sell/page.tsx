@@ -1,3 +1,5 @@
+"use server";
+
 import { SellWorkspace } from "@/components/sell/sell-workspace";
 import { getCategories } from "@/lib/api/category";
 

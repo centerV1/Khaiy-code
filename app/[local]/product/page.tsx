@@ -1,3 +1,5 @@
+"use server";
+
 import { ProductsPage } from "@/components/marketplace/products-page";
 import { getMarketplaceBootstrap } from "@/lib/api/marketplace";
 

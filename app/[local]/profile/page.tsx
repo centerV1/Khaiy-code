@@ -1,3 +1,5 @@
+"use server";
+
 import { ProfileDashboard } from "@/components/profile/profile-dashboard";
 
 export default async function ProfilePage({

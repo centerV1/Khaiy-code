@@ -31,7 +31,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <AppProviders>
             <div className="relative min-h-screen overflow-x-hidden" id="page-top">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_26%),radial-gradient(circle_at_85%_5%,_rgba(96,165,250,0.18),_transparent_20%)]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.18),transparent_26%),radial-gradient(circle_at_85%_5%,rgba(96,165,250,0.18),transparent_20%)]" />
               <div className="relative flex min-h-screen flex-col">
                 <Header locale={local} />
                 <main className="flex-1 pt-28">{children}</main>

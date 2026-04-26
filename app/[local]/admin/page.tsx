@@ -1,3 +1,5 @@
+"use server";
+
 import { AdminWorkspace } from "@/components/admin/admin-workspace";
 import { getCategories } from "@/lib/api/category";
 import { getProducts } from "@/lib/api/products";
