@@ -1,13 +1,9 @@
-
-
-FROM oven/bun:1-alpine AS base
+FROM oven/bun:1-alpine AS deps
 WORKDIR /app
-
-FROM base AS deps
-COPY package.json bun.lock* ./
+COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
-FROM base AS builder
+FROM oven/bun:1-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -16,10 +12,8 @@ ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_STORE_CURRENCY
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_STORE_CURRENCY=$NEXT_PUBLIC_STORE_CURRENCY
-
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-
 RUN bun run build
 
 FROM oven/bun:1-alpine AS runner
@@ -38,7 +32,5 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
-
 EXPOSE 3000
-
 CMD ["bun", "run", "server.js"]
