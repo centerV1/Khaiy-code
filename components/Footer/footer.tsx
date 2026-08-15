@@ -33,7 +33,7 @@ export function Footer({ locale }: FooterProps) {
     : links;
 
   const contactLink = {
-    href: "mailto:hello@khaiycode.com",
+    href: "mailto:khaicode@gmail.com",
     label: t("footer.emailPrimary"),
   };
 
