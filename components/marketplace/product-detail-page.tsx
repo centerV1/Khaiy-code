@@ -63,7 +63,7 @@ export function ProductDetailPage({
       </Link>
 
       <section className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="relative aspect-[4/3] min-h-72 w-full overflow-hidden rounded-[2.5rem] border border-white/60 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.25),_rgba(255,255,255,0.85)_55%)] shadow-2xl shadow-sky-100/70">
+        <div className="relative aspect-4/3 min-h-72 w-full overflow-hidden rounded-[2.5rem] border border-white/60 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.25),rgba(255,255,255,0.85)_55%)] shadow-2xl shadow-sky-100/70">
           {primaryImage ? (
             <Image
               alt={productName}
@@ -74,7 +74,7 @@ export function ProductDetailPage({
               loading="lazy"
             />
           ) : (
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,_rgba(14,165,233,0.35),_transparent_30%),linear-gradient(135deg,_rgba(15,23,42,0.08),_rgba(14,165,233,0.25))]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.35),transparent_30%),linear-gradient(135deg,rgba(15,23,42,0.08),rgba(14,165,233,0.25))]" />
           )}
         </div>
 
@@ -97,16 +97,16 @@ export function ProductDetailPage({
             {productDescription}
           </p>
 
-          <dl className="mt-8 grid grid-cols-2 gap-4 rounded-[2rem] bg-sky-50/80 p-5">
-            <div>
+          <dl className="mt-8 grid grid-cols-1 gap-4 rounded-[2rem] bg-sky-50/80 p-5 sm:grid-cols-2">
+            <div className="min-w-0">
               <dt className="text-xs uppercase tracking-[0.3em] text-slate-400">
                 {t("labels.seller")}
               </dt>
-              <dd className="mt-2 text-sm font-medium text-slate-800">
+              <dd className="mt-2 wrap-break-word text-sm font-medium text-slate-800">
                 {product.user.email}
               </dd>
             </div>
-            <div>
+            <div className="min-w-0">
               <dt className="text-xs uppercase tracking-[0.3em] text-slate-400">
                 {t("labels.price")}
               </dt>
@@ -114,7 +114,7 @@ export function ProductDetailPage({
                 {formatPrice(product.price, locale)}
               </dd>
             </div>
-            <div>
+            <div className="min-w-0">
               <dt className="text-xs uppercase tracking-[0.3em] text-slate-400">
                 {t("labels.updated")}
               </dt>
@@ -122,7 +122,7 @@ export function ProductDetailPage({
                 {formatDate(product.updatedAt, locale)}
               </dd>
             </div>
-            <div>
+            <div className="min-w-0">
               <dt className="text-xs uppercase tracking-[0.3em] text-slate-400">
                 {t("labels.delivery")}
               </dt>
