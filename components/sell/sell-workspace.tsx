@@ -172,9 +172,9 @@ export function SellWorkspace({ locale, categories }: SellWorkspaceProps) {
             {t("sell.restrictedDescription")}{" "}
             <a
               className="font-medium text-sky-700 underline decoration-sky-300 underline-offset-4 transition hover:text-sky-800"
-              href="mailto:khaiycode@gmail.com"
+              href="mailto:khaicode@gmail.com"
             >
-              khaiycode@gmail.com
+              khaicode@gmail.com
             </a>
           </p>
           <Link

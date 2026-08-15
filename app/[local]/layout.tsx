@@ -9,7 +9,7 @@ import { Header } from "@/components/Header/header";
 import { AppProviders } from "@/components/providers/app-providers";
 
 export const metadata: Metadata = {
-  title: "Khaiy Code",
+  title: "Khai Code",
   description: "Marketplace for premium code products",
 };
 

@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import type { CartItem, CartProductSnapshot } from "@/lib/types/store";
 
-const CART_STORAGE_KEY = "khaiy-code-cart";
+const CART_STORAGE_KEY = "khai-code-cart";
 
 type CartContextValue = {
   items: CartItem[];

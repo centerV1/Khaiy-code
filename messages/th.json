@@ -1,5 +1,5 @@
 {
-  "brand": "Khaiy Code",
+  "brand": "Khai Code",
   "nav": {
     "home": "หน้าแรก",
     "products": "สินค้า",
@@ -153,11 +153,11 @@
   },
   "banner": {
     "sellInvite": "ถ้ากำลังมองหาโค้ดที่ใช่ กดที่นี่เพื่อดูสินค้าของเรา",
-    "subject": "ดูสินค้า - Khaiy Code"
+    "subject": "ดูสินค้า - Khai Code"
   },
   "footer": {
-    "emailPrimary": "อีเมล Khaiy Code",
-    "copyright": "© 2026 Khaiy Code",
+    "emailPrimary": "อีเมล Khai Code",
+    "copyright": "© 2026 Khai Code",
     "links": {
       "home": "หน้าหลัก",
       "products": "สินค้า",
