@@ -1,6 +1,13 @@
-import type { AppLocale, CartProductSnapshot, ProductSummary } from "@/lib/types/store";
+import type {
+  AppLocale,
+  CartProductSnapshot,
+  ProductSummary,
+} from "@/lib/types/store";
 
-const STORE_CURRENCY = process.env.NEXT_PUBLIC_STORE_CURRENCY ?? "USD";
+const DEFAULT_STORE_CURRENCY = "USD";
+const STORE_CURRENCY = normalizeCurrencyCode(
+  process.env.NEXT_PUBLIC_STORE_CURRENCY,
+);
 
 export function normalizeLocale(locale: string): AppLocale {
   return locale === "th" ? "th" : "en";
@@ -56,4 +63,22 @@ export function formatDate(value: string, locale: string) {
 
 export function getInitials(email: string) {
   return email.slice(0, 2).toUpperCase();
+}
+
+function normalizeCurrencyCode(value: string | undefined) {
+  const candidate = value?.trim().toUpperCase();
+
+  if (!candidate || !/^[A-Z]{3}$/.test(candidate)) {
+    return DEFAULT_STORE_CURRENCY;
+  }
+
+  try {
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: candidate,
+    });
+    return candidate;
+  } catch {
+    return DEFAULT_STORE_CURRENCY;
+  }
 }
